@@ -1,0 +1,8 @@
+* Installtion
+Download the code and put them in your ~~/.emacs.d~ directory.
+* Features
+- It contains EXWM
+- Integrating coding, documentation, schedeuling, browsing, googling, chatting at the same place.
+- Extremely strong documentation feature to aid the programming process.
+- Familiar and efficient keybinding to make coding faster, easier and enjoyable.
+- Extensive documentation on each part of the configuration.
