@@ -91,6 +91,10 @@ its also a cool one, i should use it someday.
 (setq org-confirm-babel-evaluate nil)
 (global-set-key "\C-ca" 'org-agenda)
 #+end_src
+** Toggle truncate lines
+#+begin_src emacs-lisp
+(global-visual-line-mode)
+#+end_src
 * Emacs Environment
 ** vterm
 #+begin_src emacs-lisp

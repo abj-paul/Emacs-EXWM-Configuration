@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Emacs
+Exec=sh /home/abhijit/.emacs.d/start-exwm.sh
+Type=application
