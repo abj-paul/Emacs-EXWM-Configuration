@@ -1217,3 +1217,13 @@ This package also uses functions that are not compatible with versions of Emacs 
     :init
     (global-undo-tree-mode))
 #+end_src
+* Volume
+  C-x / + to increase volume by 10%
+  c-x / - to decrease volume by 10%
+  c-x / v to manually select a volume
+  c-x / d to see the volume of the current sink
+[[https://github.com/flexibeast/pulseaudio-control][Github documnetation]]
+#+begin_src emacs-lisp
+(require 'pulseaudio-control)
+(pulseaudio-control-default-keybindings)
+#+end_src
