@@ -1,6 +1,7 @@
 * Installtion
 - Backup your ~/.emacs.d directory.
 - git clone https://github.com/abj-paul/Emacs-EXWM-Configuration ~/.emacs.d
+- To use EXWM, put EXWM.desktop file in /usr/share/xsession. (Do edit the file path to .emacs.d/start-exwm.sh in this EXWM.desktop file.)
 * Features
 - It contains EXWM
 - Integrating coding, documentation, schedeuling, browsing, googling, chatting at the same place.
