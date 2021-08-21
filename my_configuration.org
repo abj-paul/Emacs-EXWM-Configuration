@@ -329,6 +329,15 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
    The only time I actually had to use comments, this is for ease of removal if you happen to not like exwm.
 *** Installation
 #+BEGIN_SRC emacs-lisp
+(defun startup-window()
+  "Open dashboard and Daily-Routine.org in startup window."
+  (interactive)
+  (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+  (split-window-horizontally)
+  (dashboard-setup-startup-hook)
+  (dashboard-refresh-buffer)
+)
+
 (defun efs/set-wallpaper ()
     (interactive)
     ;; NOTE: You will need to update this to a valid background path!
@@ -449,6 +458,7 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       (cl-pushnew k exwm-input-prefix-keys))
       
       ;; this just enables exwm, it started automatically once everything is ready
+      (startup-window)
       (exwm-enable))
 #+END_SRC
 
@@ -591,10 +601,11 @@ change the numbers to suit your liking, I find 5 to be enough.
     :ensure t
     :config
       (dashboard-setup-startup-hook)
-      (setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
+      ;;(setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
       (setq dashboard-items '((recents  . 5)
                               (projects . 5)))
-      (setq dashboard-banner-logo-title ""))
+      ;(setq dashboard-banner-logo-title "")
+      )
 #+END_SRC
 * Modeline
 The modeline is the heart of emacs, it offers information at all times, it's persistent
@@ -1257,3 +1268,30 @@ s-e (sudo-edit)
 C-x r m -> Make a new bookmark
 C-x r b -> Go to a bookmark
 C-x r l -> List all bookmarks
+* multi-vterm
+- multi-vterm-project: Create/toggle terminal based on current project
+- multi-vterm: Create a new terminal
+
+#+begin_src emacs-lisp
+(use-package multi-vterm)
+#+end_src
+* Start-up window with dashboard and schedeule
+#+begin_src emacs-lisp
+;(progn 
+;    (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+;    (split-window-horizontally)
+;    (dashboard-refresh-buffer)
+;)
+;; Adding this function to exwm
+(defun startup-window()
+  "Open dashboard and Daily-Routine.org in startup window."
+  (interactive)
+  (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+  (split-window-horizontally)
+  (dashboard-setup-startup-hook)
+  (dashboard-refresh-buffer)
+)
+#+end_src
+* Bind buffer to workspace
+#+begin_src s
+#+end_src
