@@ -873,8 +873,8 @@ You can also manually invoke =config-reload=.
   (defun config-reload ()
     "Reloads ~/.emacs.d/config.org at runtime"
     (interactive)
-    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-  (global-set-key (kbd "C-c r") 'config-reload)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/my_configuration.org")))
+  (global-set-key (kbd "C-c s-r") 'config-reload)
 #+END_SRC
 
 ** Subwords
@@ -1250,3 +1250,10 @@ This package also uses functions that are not compatible with versions of Emacs 
 #+end_src
 
 #+RESULTS:
+* Open a file with sudo access
+s-e (sudo-edit)
+* File Bookmarking in emacs
+  [[http://pragmaticemacs.com/emacs/use-bookmarks-to-jump-to-files-or-directories/][Guide.]]
+C-x r m -> Make a new bookmark
+C-x r b -> Go to a bookmark
+C-x r l -> List all bookmarks
