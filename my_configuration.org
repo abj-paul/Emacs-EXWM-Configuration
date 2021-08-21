@@ -1,3 +1,5 @@
+* A DETAILED guide to elisp
+[[https://www.math.utah.edu/docs/info/emacs-lisp-intro_toc.html][Perfect guide.]]
 * Use-package
 #+begin_src emacs-lisp
 (setq use-package-always-ensure t)
@@ -322,6 +324,57 @@ n(next error) p(previous error) e(explain error) g(check the source buffer and u
 #+end_src
 ** Java Development
 ** Python development
+* Custom-Made Functions
+All the custom made functions are here so that they initialize before exwm (thats where we use them, mainly)
+** Start-up window with dashboard and schedeule
+ #+begin_src emacs-lisp
+ ;(progn 
+ ;    (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+ ;    (split-window-horizontally)
+ ;    (dashboard-refresh-buffer)
+ ;)
+ ;; Adding this function to exwm
+ (defun abj/startup-window()
+   "Open dashboard and Daily-Routine.org in startup window."
+   (interactive)
+   (exwm-workspace-switch-create 1)
+   (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+   (split-window-horizontally)
+   (dashboard-setup-startup-hook)
+   (dashboard-refresh-buffer)
+ )
+ #+end_src
+** Bind buffer to workspace
+ #+begin_src emacs-lisp
+ (defun abj/bind-vterm-to-workspace(workspace-index buffer-name dir)
+   "Bind a buffer to a workspace in EXWM"
+   (interactive)
+   (exwm-workspace-switch-create workspace-index)
+   (multi-vterm)
+   (let ((default-buffer-name "*vterminal<1>*"))
+   (progn
+   (comint-send-string (get-buffer-process default-buffer-name) (format "cd %s\n" dir))
+   (with-current-buffer default-buffer-name
+     (rename-buffer buffer-name))
+     ))
+     )
+ (defun abj/firefox-buffer()
+   (interactive)
+   (exwm-workspace-switch-create 4)
+   (start-process-shell-command "google-chrome" "global-firefox" "google-chrome")
+)
+
+ (defun abj/init-workspace-bounded-buffers()
+   "Initializes buffers in workspaces"
+   (interactive)
+   ;(setq exwm-workspace-number 7l)
+   (abj/startup-window)
+   (abj/bind-vterm-to-workspace 2 "project-vterm" "~/Desktop/Everything/")
+   (abj/bind-vterm-to-workspace 5 "others-vterm" "~/.emacs.d/")
+   (exwm-workspace-switch 1)
+ )
+ ;(bind-buffer-to-workspace)
+ #+end_src
 * Window Manager
 Everything regarding the WM or DE-like functionality is bundled here, remove the entire section if you do not wish to use =exwm=.
 
@@ -329,15 +382,6 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
    The only time I actually had to use comments, this is for ease of removal if you happen to not like exwm.
 *** Installation
 #+BEGIN_SRC emacs-lisp
-(defun startup-window()
-  "Open dashboard and Daily-Routine.org in startup window."
-  (interactive)
-  (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
-  (split-window-horizontally)
-  (dashboard-setup-startup-hook)
-  (dashboard-refresh-buffer)
-)
-
 (defun efs/set-wallpaper ()
     (interactive)
     ;; NOTE: You will need to update this to a valid background path!
@@ -380,7 +424,7 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       (efs/set-wallpaper)
       
 ;; a number between 1 and 9, exwm creates workspaces dynamically so I like starting out with 1
-      ;(setq exwm-workspace-number 5)
+      ;(setq exwm-workspace-number 6)
 
       ;; When window "class" updates, use it to set the buffer name
       (add-hook 'exwm-update-class-hook #'efs/exwm-update-class)
@@ -458,8 +502,11 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       (cl-pushnew k exwm-input-prefix-keys))
       
       ;; this just enables exwm, it started automatically once everything is ready
-      (startup-window)
-      (exwm-enable))
+
+      (exwm-enable)
+      (abj/init-workspace-bounded-buffers)
+)
+
 #+END_SRC
 
 #+RESULTS:
@@ -1274,24 +1321,4 @@ C-x r l -> List all bookmarks
 
 #+begin_src emacs-lisp
 (use-package multi-vterm)
-#+end_src
-* Start-up window with dashboard and schedeule
-#+begin_src emacs-lisp
-;(progn 
-;    (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
-;    (split-window-horizontally)
-;    (dashboard-refresh-buffer)
-;)
-;; Adding this function to exwm
-(defun startup-window()
-  "Open dashboard and Daily-Routine.org in startup window."
-  (interactive)
-  (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
-  (split-window-horizontally)
-  (dashboard-setup-startup-hook)
-  (dashboard-refresh-buffer)
-)
-#+end_src
-* Bind buffer to workspace
-#+begin_src s
 #+end_src
