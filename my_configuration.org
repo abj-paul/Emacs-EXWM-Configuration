@@ -1,3 +1,7 @@
+* Use-package
+#+begin_src emacs-lisp
+(setq use-package-always-ensure t)
+#+end_src
 * Installation
 I will add my config file installation procedure once I am done with editing it and it works fine.
 ** Dependency
@@ -1227,3 +1231,22 @@ This package also uses functions that are not compatible with versions of Emacs 
 (require 'pulseaudio-control)
 (pulseaudio-control-default-keybindings)
 #+end_src
+* Java
+#+begin_src emacs-lisp
+(use-package projectile)
+(use-package flycheck)
+(use-package yasnippet :config (yas-global-mode))
+(use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :config (setq lsp-completion-enable-additional-text-edit nil))
+(use-package hydra)
+(use-package company)
+(use-package lsp-ui)
+(use-package which-key :config (which-key-mode))
+(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package dap-java :ensure nil)
+(use-package lsp-ivy)
+(use-package lsp-treemacs)
+#+end_src
+
+#+RESULTS:
