@@ -340,8 +340,9 @@ All the custom made functions are here so that they initialize before exwm (that
    (exwm-workspace-switch-create 1)
    (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
    (split-window-horizontally)
-   (dashboard-setup-startup-hook)
-   (dashboard-refresh-buffer)
+   ;(dashboard-setup-startup-hook)
+   ;(dashboard-refresh-buffer)
+   (find-file "~/Desktop/Everything/Emacs/Todo-List.org" )
  )
  #+end_src
 ** Bind buffer to workspace
@@ -359,18 +360,28 @@ All the custom made functions are here so that they initialize before exwm (that
      ))
      )
  (defun abj/firefox-buffer()
+ "Opens firefox in workspace 4 at startup"
    (interactive)
    (exwm-workspace-switch-create 4)
-   (start-process-shell-command "google-chrome" "global-firefox" "google-chrome")
+   (start-process-shell-command "firefox" "global-firefox" "firefox")
 )
+(defun abj/dashboard-buffer()
+ "Opens dashboard in workspace 3 at startup"
+ (interactive)
+ (exwm-workspace-switch-create 3)
+ (dashboard-setup-startup-hook)
+ (dashboard-refresh-buffer)
+ )
 
  (defun abj/init-workspace-bounded-buffers()
    "Initializes buffers in workspaces"
    (interactive)
    ;(setq exwm-workspace-number 7l)
-   (abj/startup-window)
+   (abj/dashboard-buffer)
    (abj/bind-vterm-to-workspace 2 "project-vterm" "~/Desktop/Everything/")
    (abj/bind-vterm-to-workspace 5 "others-vterm" "~/.emacs.d/")
+   (abj/firefox-buffer)
+   (abj/startup-window)
    (exwm-workspace-switch 1)
  )
  ;(bind-buffer-to-workspace)
@@ -651,7 +662,7 @@ change the numbers to suit your liking, I find 5 to be enough.
       ;;(setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
       (setq dashboard-items '((recents  . 5)
                               (projects . 5)))
-      ;(setq dashboard-banner-logo-title "")
+      (setq dashboard-banner-logo-title "")
       )
 #+END_SRC
 * Modeline
