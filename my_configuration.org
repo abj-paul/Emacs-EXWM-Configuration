@@ -1,5 +1,7 @@
-* A DETAILED guide to elisp
+#+SEQ_TODO: THIS_IS_GOLD | DONE
+* THIS_IS_GOLD A DETAILED guide to elisp
 [[https://www.math.utah.edu/docs/info/emacs-lisp-intro_toc.html][Perfect guide.]]
+[[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs guides by Sacha Sua]]
 * Use-package
 #+begin_src emacs-lisp
 (setq use-package-always-ensure t)
@@ -1332,4 +1334,15 @@ C-x r l -> List all bookmarks
 
 #+begin_src emacs-lisp
 (use-package multi-vterm)
+#+end_src
+* Current workspace number in modeline
+#+begin_src emacs-lisp
+;(setq mode-line-format exwm-workspace-current-index)
+;(message "Current workspace: %d" mode-line-format)
+;(message "The value of fill-column is %d." fill-column)
+;(force-mode-line-update t)
+(defun abj/show-current-workspace()
+  (message (format "Current Workspace: %d" exwm-workspace-current-index))
+)
+(add-hook 'exwm-workspace-switch-hook #'abj/show-current-workspace)
 #+end_src
