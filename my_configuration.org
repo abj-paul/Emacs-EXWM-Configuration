@@ -517,7 +517,7 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       ;; this just enables exwm, it started automatically once everything is ready
 
       (exwm-enable)
-      (abj/init-workspace-bounded-buffers)
+      ;(abj/init-workspace-bounded-buffers)
 )
 
 #+END_SRC
@@ -1337,12 +1337,16 @@ C-x r l -> List all bookmarks
 #+end_src
 * Current workspace number in modeline
 #+begin_src emacs-lisp
-;(setq mode-line-format exwm-workspace-current-index)
+;(setq mode-line-format (format "Workspace: %d " exwm-workspace-current-index))
 ;(message "Current workspace: %d" mode-line-format)
 ;(message "The value of fill-column is %d." fill-column)
 ;(force-mode-line-update t)
+
 (defun abj/show-current-workspace()
   (message (format "Current Workspace: %d" exwm-workspace-current-index))
+  (setq global-mode-string (last global-mode-string 1))
+  (add-to-list 'global-mode-string (format "Workspace: %d " exwm-workspace-current-index))
+  (force-mode-line-update t)
 )
 (add-hook 'exwm-workspace-switch-hook #'abj/show-current-workspace)
 #+end_src
