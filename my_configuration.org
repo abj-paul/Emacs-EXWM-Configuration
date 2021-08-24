@@ -1,4 +1,4 @@
-#+SEQ_TODO: THIS_IS_GOLD | DONE
+#+SEQ_TODO: THIS_IS_GOLD | INCOMPLETE DONE
 * THIS_IS_GOLD A DETAILED guide to elisp
 [[https://www.math.utah.edu/docs/info/emacs-lisp-intro_toc.html][Perfect guide.]]
 [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs guides by Sacha Sua]]
@@ -344,7 +344,7 @@ All the custom made functions are here so that they initialize before exwm (that
    (split-window-horizontally)
    ;(dashboard-setup-startup-hook)
    ;(dashboard-refresh-buffer)
-   (find-file "~/Desktop/Everything/Emacs/Todo-List.org" )
+   (find-file "~/Desktop/Everything/Emacs/Steps.org" )
  )
  #+end_src
 ** Bind buffer to workspace
@@ -517,7 +517,7 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       ;; this just enables exwm, it started automatically once everything is ready
 
       (exwm-enable)
-      ;(abj/init-workspace-bounded-buffers)
+      (abj/init-workspace-bounded-buffers)
 )
 
 #+END_SRC
@@ -1349,4 +1349,43 @@ C-x r l -> List all bookmarks
   (force-mode-line-update t)
 )
 (add-hook 'exwm-workspace-switch-hook #'abj/show-current-workspace)
+#+end_src
+* INCOMPLETE Quelpa
+I don't know why this is necessary.
+#+begin_src emacs-lisp
+;(quelpa
+; '(quelpa-use-package
+;   :fetcher git
+;   :url "https://github.com/quelpa/quelpa-use-package.git"))
+;(require 'quelpa-use-package)
+#+end_src
+** Bufler
+ #+begin_src emacs-lisp
+ ;(use-package bufler
+ ;  :quelpa (bufler :fetcher github :repo "alphapapa/bufler.el"
+ ;                  :files (:defaults (:exclude "helm-bufler.el"))))
+; (use-package bufler)
+ #+end_src
+* INCOMPLETE Make buffer-list relate to workspace
+#+begin_src emacs-lisp
+;(exwm-workspace--display-buffer "*scratch*" display-buffer-alist)
+;(buffer-list)
+;(frame-face-alist)
+#+end_src
+* Eww mode
+[[http://ergoemacs.org/emacs/emacs_eww_web_browser.html][Perfect Guide.]]
+Following code opens url in new buffer. I still don't know why this is necessary.
+#+begin_src emacs-lisp
+(when (fboundp 'eww)
+  (defun xah-rename-eww-buffer ()
+    "Rename `eww-mode' buffer so sites open in new page.
+URL `http://ergoemacs.org/emacs/emacs_eww_web_browser.html'
+Version 2017-11-10"
+    (let (($title (plist-get eww-data :title)))
+      (when (eq major-mode 'eww-mode )
+        (if $title
+            (rename-buffer (concat "eww " $title ) t)
+          (rename-buffer "eww" t)))))
+
+  (add-hook 'eww-after-render-hook 'xah-rename-eww-buffer))
 #+end_src
