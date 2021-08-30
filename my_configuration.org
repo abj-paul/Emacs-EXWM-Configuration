@@ -282,50 +282,25 @@ This section contains packages that is universally needed by many programming la
 #+begin_src emacs-lisp
 (use-package hungry-delete)
 #+end_src
-** C/C++ development
-*** flycheck
-Check syntac on the fly.
-[[https://www.flycheck.org/en/latest/][Extensive Guide on Flychecker]]
-keybindings:
-1) list all errors: C-c ! l or M-x flycheck-list-errors
-n(next error) p(previous error) e(explain error) g(check the source buffer and update the error list) q(quit)
-2) C-c ! v to learn which syntax checkers are working for this language.
-3) Have a separate window for error-list display at the bottom of the screen.
+** Java
+ #+begin_src emacs-lisp
+ (use-package projectile)
+ (use-package flycheck)
+ (use-package yasnippet :config (yas-global-mode))
+ (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
+   :config (setq lsp-completion-enable-additional-text-edit nil))
+ (use-package hydra)
+ (use-package company)
+ (use-package lsp-ui)
+ (use-package which-key :config (which-key-mode))
+ (use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+ (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+ (use-package dap-java :ensure nil)
+ (use-package lsp-ivy)
+ (use-package lsp-treemacs)
+ #+end_src
 
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-(setq flycheck-idle-change-delay 2.0)) ;;incresed flycheck delay because its annoying with short delay.
-
-;; This function gives a list of errors in a window at the bottom part of the screen. It occupies 0.2 or 20% of the whole screen.
-(add-to-list 'display-buffer-alist
-             `(,(rx bos "*Flycheck errors*" eos)
-              (display-buffer-reuse-window
-               display-buffer-in-side-window)
-              (side            . bottom)
-              (reusable-frames . visible)
-              (window-height   . 0.2)))
-#+end_src
-*** auto-complete-config
-#+begin_src emacs-lisp
-(use-package auto-complete
-  :ensure t
-  :config
-   (ac-config-default))
-#+end_src
-*** yasnippet
-#+begin_src emacs-lisp
-;(use-package yasnippet
-;  :ensure t
-;  :config
-;  (yas-global-mode 1))
-(require 'yasnippet)
-(yas-global-mode 1)
-
-#+end_src
-** Java Development
-** Python development
+ #+RESULTS:
 * Custom-Made Functions
 All the custom made functions are here so that they initialize before exwm (thats where we use them, mainly)
 ** Start-up window with dashboard and schedeule
@@ -887,7 +862,7 @@ Unless you have the muscle memory, I recommend omitting this bit, as you may los
 I don't understand how ibuffer isn't the default option by now.
 It's vastly superior in terms of ergonomics and functionality, you can delete buffers, rename buffer, move buffers, organize buffers etc.
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x b") 'ibuffer)
+;(global-set-key (kbd "C-x b") 'ibuffer)
 #+END_SRC
 
 **** expert-mode
@@ -1302,25 +1277,6 @@ This package also uses functions that are not compatible with versions of Emacs 
 (require 'pulseaudio-control)
 (pulseaudio-control-default-keybindings)
 #+end_src
-* Java
-#+begin_src emacs-lisp
-(use-package projectile)
-(use-package flycheck)
-(use-package yasnippet :config (yas-global-mode))
-(use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
-  :config (setq lsp-completion-enable-additional-text-edit nil))
-(use-package hydra)
-(use-package company)
-(use-package lsp-ui)
-(use-package which-key :config (which-key-mode))
-(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
-(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
-(use-package dap-java :ensure nil)
-(use-package lsp-ivy)
-(use-package lsp-treemacs)
-#+end_src
-
-#+RESULTS:
 * Open a file with sudo access
 s-e (sudo-edit)
 * File Bookmarking in emacs
