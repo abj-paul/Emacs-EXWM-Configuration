@@ -2,6 +2,7 @@
 * THIS_IS_GOLD A DETAILED guide to elisp
 [[https://www.math.utah.edu/docs/info/emacs-lisp-intro_toc.html][Perfect guide.]]
 [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs guides by Sacha Sua]]
+[[https://orgmode.org/worg/org-web.html][Sites made with org mode.]]
 * Use-package
 #+begin_src emacs-lisp
 (setq use-package-always-ensure t)
@@ -452,22 +453,22 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       (exwm-input-set-simulation-keys
        '(
          ;; movement
-         ([?\C-b] . left)
-         ([?\M-b] . C-left)
-         ([?\C-f] . right)
-         ([?\M-f] . C-right)
-         ([?\C-p] . up)
-         ([?\C-n] . down)
-         ([?\C-a] . home)
-         ([?\C-e] . end)
-         ([?\M-v] . prior)
-         ([?\C-v] . next)
-         ([?\C-d] . delete)
-         ([?\C-k] . (S-end delete))
+         ;([?\C-b] . left)
+         ;([?\M-b] . C-left)
+         ;([?\C-f] . right)
+         ;([?\M-f] . C-right)
+         ;([?\C-p] . up)
+         ;([?\C-n] . down)
+         ;([?\C-a] . home)
+         ;([?\C-e] . end)
+         ;([?\M-v] . prior)
+         ;([?\C-v] . next)
+         ;([?\C-d] . delete)
+         ;([?\C-k] . (S-end delete))
          ;; cut/paste
-         ([?\C-w] . ?\C-x)
+         ;([?\C-w] . ?\C-x)
          ([?\M-w] . ?\C-c)
-         ([?\C-y] . ?\C-v)
+         ;([?\C-y] . ?\C-v)
          ;; search
          ([?\C-s] . ?\C-f)))
 
@@ -1344,4 +1345,35 @@ Version 2017-11-10"
           (rename-buffer "eww" t)))))
 
   (add-hook 'eww-after-render-hook 'xah-rename-eww-buffer))
+#+end_src
+* Copy-paste in browser/application
+~Toggle between char-mode and line-input-mode in exwm~
+EXWM has three modes. They are- 
+1) char mode : The app gets all the keyboard signals, aside from global keybindings. In this mode, we can freely use C-c to copy, C-x to cut C-v to paste etc.
+2) line mode : EXWM gets all the keys.
+3) simulation mode : Its a extension of line mode. EXWM gets the keybinding, then converts it and transfers it to the app. For example, 
+#+begin_src emacs-lisp :eval never-export :results none :exports none
+;; Don't run/evaluate or export this code block.
+(exwm-input-set-simulation-keys
+ '(([?\C-b] . left)
+  ([?\C-f] . right)))
+#+end_src
+
+Now if we press C-f, EXWM will take that and convert it into "go to right character" and send it to app( e.g. firefox).
+** Set global key to toggle between char-mode and line-mode
+Press s-i to toggle between char-mode and line-mode
+The following code does not work for some unknown reason. So in the meantime, use ~exwm-reset~ to go back to normal state of emacs. The keybinding for it is - ~s-r~
+ #+begin_src emacs-lisp
+(exwm-input-set-key (kbd "s-i") 'exwm-input-toggle-keyboard)
+#+end_src
+
+#+RESULTS:
+
+** Open applications in char-mode by default
+    I got this code block from [[https://emacs.stackexchange.com/questions/33326/how-do-i-cut-and-paste-effectively-between-applications-while-using-exwm][this stackoverflow question.]]
+#+begin_src emacs-lisp
+(add-hook 'exwm-manage-finish-hook
+  (lambda () (call-interactively #'exwm-input-release-keyboard)
+     ;(exwm-layout-hide-mode-line)
+))
 #+end_src
