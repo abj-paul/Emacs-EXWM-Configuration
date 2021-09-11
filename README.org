@@ -3,10 +3,10 @@
 - git clone https://github.com/abj-paul/Emacs-EXWM-Configuration ~/.emacs.d
 - To use EXWM, put EXWM.desktop file in /usr/share/xsession. (Do edit the file path to .emacs.d/start-exwm.sh in this EXWM.desktop file.)
 * Features
-- Its a combination of Uncle Dave's And System Crafter's config, along with my daily configurations.
+- Its a combination of ~Uncle Dave's~ And ~System Crafter's~ config, along with my daily configurations.
 - I will keep updating it and once I am satisfied/confident at some point, I will make a better documentation and guide.
 * Things You can Contribute
-Any contribution is highly requested. I do seriously lack in 
+Any contribution is highly requested. I do seriously lack in -
 ** A stable programming IDE-like feature
 Currently, I don't have any stable programming IDE-like environment setup.
 - I have used default configuration mentioned in ~lsp-java~ documentation but It does not always work. I have no idea why.
