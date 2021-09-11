@@ -3,8 +3,14 @@
 - git clone https://github.com/abj-paul/Emacs-EXWM-Configuration ~/.emacs.d
 - To use EXWM, put EXWM.desktop file in /usr/share/xsession. (Do edit the file path to .emacs.d/start-exwm.sh in this EXWM.desktop file.)
 * Features
-- It contains EXWM
-- Integrating coding, documentation, schedeuling, browsing, googling, chatting at the same place.
-- Extremely strong documentation feature to aid the programming process.
-- Familiar and efficient keybinding to make coding faster, easier and enjoyable.
-- Extensive documentation on each part of the configuration.
+- Its a combination of Uncle Dave's And System Crafter's config, along with my daily configurations.
+- I will keep updating it and once I am satisfied/confident at some point, I will make a better documentation and guide.
+* Things You can Contribute
+Any contribution is highly requested. I do seriously lack in 
+** A stable programming IDE-like feature
+Currently, I don't have any stable programming IDE-like environment setup.
+- I have used default configuration mentioned in ~lsp-java~ documentation but It does not always work. I have no idea why.
+- For c, c++, I only use flycheck.
+- For normal text documentation, I use company-mode. But I am in search of a ~grammarly~-like package.
+- Haven't setup python environment yet.
+
