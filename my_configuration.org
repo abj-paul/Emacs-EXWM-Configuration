@@ -364,7 +364,7 @@ All the custom made functions are here so that they initialize before exwm (that
  )
  ;(bind-buffer-to-workspace)
  #+end_src
-* Window Manager
+* Window Manager(EXWM)
 Everything regarding the WM or DE-like functionality is bundled here, remove the entire section if you do not wish to use =exwm=.
 
 ** exwm
@@ -448,7 +448,17 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       ;; an easy way to make keybindings work *only* in line mode
       (push ?\C-q exwm-input-prefix-keys)
       (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
-
+      
+      (setq exwm-input-global-keys
+      `(;; Various other keys...
+      
+      ;; Prompt for a selection and take a screenshot
+        (,(kbd "s-$") . md/screenshot-image-selection)
+        ;; Prompt for a selectoin and start a video
+        (,(kbd "s-%") . md/screenshot-video-selection-start)
+        ;; Stop the video
+        (,(kbd "s-^") . md/screenshot-video-stop)))
+	
       ;; simulation keys are keys that exwm will send to the exwm buffer upon inputting a key combination
       (exwm-input-set-simulation-keys
        '(
@@ -585,6 +595,7 @@ You can also change those if you'd like, but I highly recommend keeping 'em the 
 ** Screenshots
 I don't need scrot to take screenshots, or shutter or whatever tools you might have. This is enough.
 These won't work in the terminal version or the virtual console, obvious reasons.
+// NOT WORKING FOR ME.
 
 *** Screenshotting the entire screen
 #+BEGIN_SRC emacs-lisp
@@ -1436,3 +1447,35 @@ Company mode eats up the ~space~ key so this small function saves us.
 
 #+RESULTS:
 : company-abort-and-insert-space
+* Add keybinding to counsel-linux-app
+#+begin_src emacs-lisp
+  (exwm-input-set-key (kbd "s-a") 'counsel-linux-app)
+#+end_src
+* Video recording and screenshots
+[[https://www.mattduck.com/2021-06-exwm-screenshots.html][Awesome guide.]]
+
+These functions are bounded to keys-
+Super-Shift-4
+Super-Shift-5
+Super-Shift-6
+They are loaded when exwm is being loaded. So go to that configuration for their implmenetattion.
+
+#+begin_src emacs-lisp
+(defun md/screenshot-image-selection ()
+  (interactive)
+  (shell-command "/home/abhijit/manual-installation/,screenshot.sh --image-selection"))
+
+(defun md/screenshot-video-selection-start ()
+  (interactive)
+  (shell-command "/home/abhijit/manual-installation/,screenshot.sh --video-selection-start"))
+
+(defun md/screenshot-video-stop ()
+  (interactive)
+  (shell-command "/home/abhijit/manual-installation/,screenshot.sh --video-stop"))
+#+end_src
+
+#+RESULTS:
+: md/screenshot-video-stop
+
+#+RESULTSi
+: ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
