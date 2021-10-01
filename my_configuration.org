@@ -1422,3 +1422,17 @@ The following code uses words from ~~/.emacs.d/misc/english-word.txt~  to perfor
 
 #+RESULTS:
 | text-mode-hook-setup | text-mode-hook-identify |
+** Small Fix
+Company mode eats up the ~space~ key so this small function saves us.
+[[https://emacs.stackexchange.com/questions/56374/how-could-i-abort-and-apply-space-when-company-suggests-completion][Source.]]
+#+begin_src emacs-lisp
+(defun company-abort-and-insert-space ()
+  (interactive)
+  (company-abort)
+  (insert " "))
+
+(define-key company-active-map (kbd "SPC") #'company-abort-and-insert-space)
+#+end_src
+
+#+RESULTS:
+: company-abort-and-insert-space
