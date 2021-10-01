@@ -546,7 +546,7 @@ These can be modified as well, suit yourself.
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "s-d") 'daedreth/launch-discord)
   (global-set-key (kbd "<s-tab>") 'daedreth/launch-browser)
-  (global-set-key (kbd "<XF86ScreenSaver>") 'daedreth/lock-screen)
+  (global-set-key (kbd "s-l") 'daedreth/lock-screen)
   (global-set-key (kbd "<XF86PowerOff>") 'daedreth/shutdown)
 #+END_SRC
 
@@ -891,7 +891,7 @@ In the event that this happens, the following bit of configuration makes sure th
 we have access to relative line numbering in programming-related modes.
 I highly recommend not enabling =linum-relative-mode= globally, as it messed up 
 something like =ansi-term= for instance.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :eval never-export :results none :exports none
   (use-package linum-relative
     :ensure t
     :config
@@ -1377,3 +1377,48 @@ The following code does not work for some unknown reason. So in the meantime, us
      ;(exwm-layout-hide-mode-line)
 ))
 #+end_src
+* Save emacs sessions
+  Automatically save and load desktop sessions when exit/starting.
+#+begin_src emacs-lisp
+;(desktop-save-mode 1)
+#+end_src
+* Fresh Emacs with no auto-loaded sessions
+  Specify the option ~--no-desktop~ on the command line when you don’t want it to reload any saved desktop. This turns off desktop-save-mode for the current session.
+  
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Emacs-Sessions.html][More here.]]
+* Projectile
+#+begin_src emacs-lisp
+(use-package projectile)
+(projectile-mode +1)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_src
+
+#+RESULTS:
+: projectile-command-map
+* Auto-completion for text
+We have auto-completion for programming languages. But how about texts?
+The following code uses words from ~~/.emacs.d/misc/english-word.txt~  to perform auto-completion.
+[[https://emacs.stackexchange.com/questions/18304/optimal-settings-for-auto-complete-for-writing-papers-prose-in-natural-languag][Source.]]
+#+begin_src emacs-lisp
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+(defun text-mode-hook-setup ()
+  ;; make `company-backends' local is critcal
+  ;; or else, you will have completion in every major mode, that's very annoying!
+  (make-local-variable 'company-backends)
+
+  ;; company-ispell is the plugin to complete words
+  (add-to-list 'company-backends 'company-ispell)
+
+  ;; OPTIONAL, if `company-ispell-dictionary' is nil, `ispell-complete-word-dict' is used
+  ;;  but I prefer hard code the dictionary path. That's more portable.
+  (setq company-ispell-dictionary (file-truename "~/.emacs.d/misc/english-words.txt")))
+
+(add-hook 'text-mode-hook 'text-mode-hook-setup)
+
+#+end_src
+
+#+RESULTS:
+| text-mode-hook-setup | text-mode-hook-identify |
