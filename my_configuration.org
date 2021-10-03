@@ -210,14 +210,14 @@ Provides sorted command history. Its automatically used by counsel-M-x so no nee
   (message "Arrow keys are bad, you know?"))
 
     ;; Disable arrow keys in normal and visual modes
-    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+;  (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+;   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+;   (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+;   (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+;   (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+;   (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+;   (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+;   (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
@@ -1500,8 +1500,9 @@ They are loaded when exwm is being loaded. So go to that configuration for their
 : ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
 * WILL_WORK_ON_IT Letterbox mode for censoring
 [[https://github.com/pacha64/letterbox-mode][Source.]]
+~M-x package-install letterbox-mode~
 #+begin_src emacs-lisp
-;(require 'letterbox-mode.el)
+(require 'letterbox-mode)
 #+end_src
 * WILL_WORK_ON_IT Define a set of keybinding
 also, try regular use-package. the only issue is - setting multi-character keybinding like c-c s a
@@ -1509,8 +1510,6 @@ https://github.com/noctuid/general.el
 #+begin_src emacs-lisp
 #+end_src
 * WILL_WORK_ON_IT Kill-ring
-* List all keybindings available in a given buffer
-C-h b
 * Don't use arrow keys!
   The code is not really here, they are added in the section when vim is being initialized. So go to the part where we intialize evil-mode.
 
