@@ -2,6 +2,7 @@
 - Backup your ~/.emacs.d directory.
 - git clone https://github.com/abj-paul/Emacs-EXWM-Configuration ~/.emacs.d
 - To use EXWM, put EXWM.desktop file in /usr/share/xsession. (Do edit the file path to .emacs.d/start-exwm.sh in this EXWM.desktop file.)
+- [[https://askubuntu.com/questions/451902/add-to-path-only-sh-file-not-a-dir][Put misc/,screenshot.sh in $PATH]] and/or do edit the file-path to ,screenshot.sh in ~my_configuration.org~ in case emacs ~shell~ can't find the file.
 * Features
 - Its a combination of ~Uncle Dave's~ And ~System Crafter's~ config, along with my daily configurations.
 - I will keep updating it and once I am satisfied/confident at some point, I will make a better documentation and guide.
