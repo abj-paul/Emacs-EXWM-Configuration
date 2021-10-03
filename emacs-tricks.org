@@ -1,0 +1,20 @@
+* Ep 1 (EmacsRocks)
+[[http://emacsrocks.com/e01.html][Link.]]
+or simply use ~evil-visual-mode or C-v~ to select a rectangle region and do stuff with that. Like deleting, replacing text using ~C-x r t~ etc
+#+begin_src java
+// Before using rectangle trick
+class random {
+    private static void a = 10;
+    private int b = 10;
+    private final float c = 10;
+}
+#+end_src
+
+#+begin_src java
+// Before using rectangle trick
+class random {
+    this.static void a = 10;
+    this.int b = 10;
+    this.final float c = 10;
+}
+#+end_src

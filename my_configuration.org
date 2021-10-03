@@ -1,4 +1,4 @@
-#+SEQ_TODO: THIS_IS_GOLD | INCOMPLETE DONE
+#+SEQ_TODO: THIS_IS_GOLD WILL_WORK_ON_IT | INCOMPLETE DONE
 * THIS_IS_GOLD A DETAILED guide to elisp
 [[https://www.math.utah.edu/docs/info/emacs-lisp-intro_toc.html][Perfect guide.]]
 [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs guides by Sacha Sua]]
@@ -188,6 +188,7 @@ Provides sorted command history. Its automatically used by counsel-M-x so no nee
 1) Use C-h as backspace in insert mode.
 2) Use C-u to scroll up.
 3) Use C-d to scroll down.
+- disabled use of arrow keys
 #+BEGIN_SRC emacs-lisp
 (use-package evil
   :init
@@ -203,10 +204,28 @@ Provides sorted command history. Its automatically used by counsel-M-x so no nee
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  
+  (defun dw/dont-arrow-me-bro ()
+  (interactive)
+  (message "Arrow keys are bad, you know?"))
+
+    ;; Disable arrow keys in normal and visual modes
+    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 #+END_SRC
+
+#+RESULTS:
+: t
+
 ** evil-collection
 Evil keybinding for famous mode/packages like vterm, eshell etc.
 #+begin_src emacs-lisp
@@ -1479,3 +1498,22 @@ They are loaded when exwm is being loaded. So go to that configuration for their
 
 #+RESULTSi
 : ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
+* WILL_WORK_ON_IT Letterbox mode for censoring
+[[https://github.com/pacha64/letterbox-mode][Source.]]
+#+begin_src emacs-lisp
+;(require 'letterbox-mode.el)
+#+end_src
+* WILL_WORK_ON_IT Define a set of keybinding
+also, try regular use-package. the only issue is - setting multi-character keybinding like c-c s a
+https://github.com/noctuid/general.el
+#+begin_src emacs-lisp
+#+end_src
+* WILL_WORK_ON_IT Kill-ring
+* List all keybindings available in a given buffer
+C-h b
+* Don't use arrow keys!
+  The code is not really here, they are added in the section when vim is being initialized. So go to the part where we intialize evil-mode.
+
+#+begin_src emacs-lisp
+
+#+end_src
