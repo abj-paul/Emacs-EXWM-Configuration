@@ -1498,21 +1498,84 @@ They are loaded when exwm is being loaded. So go to that configuration for their
 
 #+RESULTSi
 : ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
-* WILL_WORK_ON_IT Letterbox mode for censoring
+* Letterbox mode for censoring
 [[https://github.com/pacha64/letterbox-mode][Source.]]
 ~M-x package-install letterbox-mode~
+
 #+begin_src emacs-lisp
-(require 'letterbox-mode)
+;(require 'letterbox-mode)
 #+end_src
+
+#+RESULTS:
+: letterbox-mode
+
 * WILL_WORK_ON_IT Define a set of keybinding
 also, try regular use-package. the only issue is - setting multi-character keybinding like c-c s a
 https://github.com/noctuid/general.el
 #+begin_src emacs-lisp
 #+end_src
-* WILL_WORK_ON_IT Kill-ring
+Failed to get sink information: No such entity
+ WILL_WORK_ON_IT Kill-ring
+* Copy Paste
+** kill-ring
+~variable~ Its a single list of text-blocks, Its shared by all buffers so we can kill in one buffer and yank in another buffer.
+There are also ways to use ~register~ just like vim. 
+** Registers
+As we are using evil, using registers is the sensible way.
+~M-x view-register RET r~
+"ayy -> yank in register a
+"sdd -> cut in register s
+
+Use ~:reg~ to see all currently-defined registers
+"+p -> To paste from system clipboard on Linux
+** Default cut/delete, yank registers
+[[https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers][Amazing explanation.]]
+0 register -> yank text(default)
+" register -> its the default register from where ~p~ command takes data from. yanking, deleting, cutting etc changes this default register.
+*** Copy, then delete, then paste
+yy (saved in 0 and ")
+dd (saved in ")
+"0p (paste from 0 register)
+
+* Replace
+[[https://www.oreilly.com/library/view/learning-gnu-emacs/1565921526/ch04s02.html][More detail, includes recursive-query.]]
+Incremental replace is my goal. Using ~:%s/text1/newtext~ just replaces the first occurence in a line which is annoying. I wish for a more robust replace procedure.
+- Use ~query-replace~ and ~replace-string~
+- In query-replace:
+  - press q to quit
+  - y, n 
+  - replace all the rest -> !
+  - Back to the previous one -> ^
+** Vim way to do it
+:6,10s/foo/bar/g [replace all foo in line 6 to 10]
+:%s/foo/bar/g [replace in whole file]
+:s/<search_string>/<replace_string> [Current line]
+
+If you want to replace in line [6-10], [14-18] and [20-23] and not in-between-
+:6,10s/<search_string>/<replace_string>/g | 14,18&& | 20,23&&
+
+Hell, you can even use a loop.
+:for range in split('6,10 14,18')| exe range 's/<search_string>/<replace_string>/g' | endfor
+-- what is exe? Run ~C-h k :~ to understand.
+
+Or even better, you can select the lines in visual-mode and do
+:s/<search_string>/<replace_string>/g
 * Don't use arrow keys!
   The code is not really here, they are added in the section when vim is being initialized. So go to the part where we intialize evil-mode.
 
 #+begin_src emacs-lisp
 
 #+end_src
+* Create scratch buffer
+  Sometimes we mistakenly kill the scratch buffer. So running this function will bring back scratch mode.
+  [[https://stackoverflow.com/questions/234963/re-open-scratch-buffer-in-emacs][source.]]
+#+begin_src emacs-lisp
+(defun create-scratch-buffer nil
+   "create a scratch buffer"
+   (interactive)
+   (switch-to-buffer (get-buffer-create "*scratch*"))
+   (lisp-interaction-mode))  
+#+end_src
+
+#+RESULTS:
+: create-scratch-buffer
