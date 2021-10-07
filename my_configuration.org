@@ -210,15 +210,15 @@ Provides sorted command history. Its automatically used by counsel-M-x so no nee
   (message "Arrow keys are bad, you know?"))
 
     ;; Disable arrow keys in normal and visual modes
-;  (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-;   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-;   (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-;   (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-;   (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-;   (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-;   (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-;   (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
-
+   (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+ 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 #+END_SRC
@@ -447,6 +447,7 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       ;(exwm-workspace-switch-create 0)
       ;; this is a way to declare truly global/always working keybindings
       ;; this is a nifty way to go back from char mode to line mode without using the mouse
+      
       (exwm-input-set-key (kbd "s-r") #'exwm-reset)
       (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
       (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
@@ -468,16 +469,9 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       (push ?\C-q exwm-input-prefix-keys)
       (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
       
-      (setq exwm-input-global-keys
-      `(;; Various other keys...
+
       
-      ;; Prompt for a selection and take a screenshot
-        (,(kbd "s-$") . md/screenshot-image-selection)
-        ;; Prompt for a selectoin and start a video
-        (,(kbd "s-%") . md/screenshot-video-selection-start)
-        ;; Stop the video
-        (,(kbd "s-^") . md/screenshot-video-stop)))
-	
+      	
       ;; simulation keys are keys that exwm will send to the exwm buffer upon inputting a key combination
       (exwm-input-set-simulation-keys
        '(
@@ -519,10 +513,28 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
                  print))
       (cl-pushnew k exwm-input-prefix-keys))
       
-      ;; this just enables exwm, it started automatically once everything is ready
+      
+      ;(setq exwm-input-global-keys
+      ;`(;; Various other keys...
+      
+      ;; Prompt for a selection and take a screenshot
+
+       ; (,(kbd "s-$") . md/screenshot-image-selection)
+        ;;; Prompt for a selectoin and start a video
+        ;(,(kbd "s-%") . md/screenshot-video-selection-start)
+        ; Stop the video
+        ;(,(kbd "s-^") . md/screenshot-video-stop)))
 
       (exwm-enable)
       (abj/init-workspace-bounded-buffers)
+      ;; this just enables exwm, it started automatically once everything is ready
+      ;(define-prefix-command 'ss-map nil "ss, record-")
+      ;:bind-keymap ((kbd "s-r") . ss-map)
+      ;:bind ( :map ss-map
+       ; ("s" . md/screenshot-image-selection)
+       ; ("v" . md/screenshot-video-selection-start)
+       ; ("e" . md/screenshot-video-stop)
+;	)
 )
 
 #+END_SRC
@@ -1510,12 +1522,23 @@ They are loaded when exwm is being loaded. So go to that configuration for their
 : letterbox-mode
 
 * WILL_WORK_ON_IT Define a set of keybinding
-also, try regular use-package. the only issue is - setting multi-character keybinding like c-c s a
+  You have two ways -
+** general.el
 https://github.com/noctuid/general.el
-#+begin_src emacs-lisp
-#+end_src
-Failed to get sink information: No such entity
- WILL_WORK_ON_IT Kill-ring
+** use-package
+*** This example can help
+ #+begin_src emacs-lisp :eval never-export :results none :exports none
+ (use-package outline
+   :config 
+     (define-prefix-command 'cm-map nil "Outline-") 
+   :bind-keymap ("C-o" . cm-map)
+   :bind (:map cm-map 
+     ("q" . outline-hide-sublevels) 
+     ("t" . outline-hide-body) 
+     ("o" . outline-hide-other)
+   ) 
+ )
+ #+end_src
 * Copy Paste
 ** kill-ring
 ~variable~ Its a single list of text-blocks, Its shared by all buffers so we can kill in one buffer and yank in another buffer.
@@ -1540,24 +1563,34 @@ dd (saved in ")
 * Replace
 [[https://www.oreilly.com/library/view/learning-gnu-emacs/1565921526/ch04s02.html][More detail, includes recursive-query.]]
 Incremental replace is my goal. Using ~:%s/text1/newtext~ just replaces the first occurence in a line which is annoying. I wish for a more robust replace procedure.
-- Use ~query-replace~ and ~replace-string~
+** Emacs Query
+   Use ~query-replace~ and ~replace-string~
 - In query-replace:
   - press q to quit
   - y, n 
   - replace all the rest -> !
   - Back to the previous one -> ^
 ** Vim way to do it
-:6,10s/foo/bar/g [replace all foo in line 6 to 10]
-:%s/foo/bar/g [replace in whole file]
-:s/<search_string>/<replace_string> [Current line]
+   g => global search
+   c => Ask for confirmation first
+   i => Case insensitive  
 
+*** Select line-range and replace
+:6,10s/foo/bar/g [replace all foo in line 6 to 10]
+*** Ask before replacing
+    :%s/text1/newText/gc
+*** Replace in whole file
+:%s/foo/bar/g [replace in whole file]
+*** Replace in currently, VERY HANDY
+:s/<search_string>/<replace_string> [Current line]
+*** Replace in different ranges of line using &&
 If you want to replace in line [6-10], [14-18] and [20-23] and not in-between-
 :6,10s/<search_string>/<replace_string>/g | 14,18&& | 20,23&&
-
+*** Replace using for loop
 Hell, you can even use a loop.
 :for range in split('6,10 14,18')| exe range 's/<search_string>/<replace_string>/g' | endfor
 -- what is exe? Run ~C-h k :~ to understand.
-
+*** Select lines/region where you want to replace in ~VISUAL~ mode
 Or even better, you can select the lines in visual-mode and do
 :s/<search_string>/<replace_string>/g
 * Don't use arrow keys!
@@ -1579,3 +1612,16 @@ Or even better, you can select the lines in visual-mode and do
 
 #+RESULTS:
 : create-scratch-buffer
+* WILL_WORK_ON_IT Split 3rd and fifth windows
+Split these windows.
+fifth: vterm + config.org
+second: vterm+ scratch
+* org-timer
+Its so amazing for productivity. ~pomodoro clock~
+org-timer-set-timer
+org-timer-continue-or-pause
+org-timer-stop
+[[https://www.youtube.com/watch?v=JbHE819kVGQ][Source Video.]]
+#+begin_src emacs-lisp
+(setq org-clock-sound "~/.emacs.d/misc/ding.wav")
+#+end_src
