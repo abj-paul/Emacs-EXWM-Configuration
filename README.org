@@ -14,4 +14,7 @@ Currently, I don't have any stable programming IDE-like environment setup.
 - For c, c++, I only use flycheck.
 - For normal text documentation, I use company-mode. But I am in search of a ~grammarly~-like package.
 - Haven't setup python environment yet.
+* Handy Things to know
+- Bookmark files: I like this feature. I have bookmarked the files I access often - like emacs configuration file or schedeuling files. This way, i can easily open them with keybinding ~C-c r l RET~
+ 
 

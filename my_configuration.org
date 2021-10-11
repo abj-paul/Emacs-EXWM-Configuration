@@ -218,6 +218,7 @@ Provides sorted command history. Its automatically used by counsel-M-x so no nee
     (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
     (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
     (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<backspace>") 'abj/dont-use-backspace)
  
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
@@ -1625,3 +1626,24 @@ org-timer-stop
 #+begin_src emacs-lisp
 (setq org-clock-sound "~/.emacs.d/misc/ding.wav")
 #+end_src
+* INCOMPLETE dont use backspace!
+#+begin_src emacs-lisp
+(defun abj/dont-use-backspace()
+(interactive)
+(message "Backspace is bad!"))
+#+end_src
+
+#+RESULTS:
+: abj/dont-use-backspace
+* WILL_WORK_ON_IT org-timer - save time !
+* auto-save.el
+  This is to aid me in remote file editing. While editing remote files, the occassional auto-saves slows down the processes for brief moments which can be annoying. So we set ~/manual-installation/autosve to save all autosave-files. As its a local folder, i don't experience any slow down while editing remote files.
+  [[https://github.com/emacsmirror/ohio-archive/blob/master/old-archive/misc/auto-save.el][Documetation.]]
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/")
+(load "auto-save.el")
+(setq auto-save-directory (expand-file-name "~/manual-installation/autosave/"))
+#+end_src
+
+#+RESULTS:
+: /home/abhijit/manual-installation/autosave/
