@@ -520,11 +520,15 @@ Everything regarding the WM or DE-like functionality is bundled here, remove the
       
       ;; Prompt for a selection and take a screenshot
 
-       ; (,(kbd "s-$") . md/screenshot-image-selection)
-        ;;; Prompt for a selectoin and start a video
-        ;(,(kbd "s-%") . md/screenshot-video-selection-start)
-        ; Stop the video
-        ;(,(kbd "s-^") . md/screenshot-video-stop)))
+(setq exwm-input-global-keys
+      `(;; Various other keys...
+
+        ;; Prompt for a selection and take a screenshot
+        (,(kbd "s-$") . md/screenshot-image-selection)
+        ;; Prompt for a selectoin and start a video
+        (,(kbd "s-%") . md/screenshot-video-selection-start)
+        ;; Stop the video
+        (,(kbd "s-^") . md/screenshot-video-stop)))
 
       (exwm-enable)
       (abj/init-workspace-bounded-buffers)
@@ -1647,3 +1651,46 @@ org-timer-stop
 
 #+RESULTS:
 : /home/abhijit/manual-installation/autosave/
+* WILL_WORK_ON_IT Emacs for Web Development
+  First, install it using package-install.
+#+begin_src emacs-lisp
+(require 'multi-web-mode)
+(setq mweb-default-major-mode 'html-mode)
+(setq mweb-tags 
+  '((js-mode  "<script[^>]*>" "</script>")
+    (css-mode "<style[^>]*>" "</style>")))
+(setq mweb-filename-extensions '("htm" "html" "phtml"))
+(multi-web-global-mode 1)
+#+end_src
+
+#+RESULTS:
+: t
+* lorem ipsum
+[[https://github.com/jschaf/emacs-lorem-ipsum][Github Documentation]]
+First, try package-install lorem-ipsum
+
+C-c l p 	lorem-ipsum-insert-paragraphs
+C-c l s 	lorem-ipsum-insert-sentences
+C-c l l 	lorem-ipsum-insert-list
+#+begin_src emacs-lisp
+(require 'lorem-ipsum)
+(lorem-ipsum-use-default-bindings)
+#+end_src
+* See a list of recently-opened file
+  [[https://stackoverflow.com/questions/50417/how-do-i-get-list-of-recent-files-in-gnu-emacs][Source]]
+#+begin_src emacs-lisp
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+#+end_src
+
+#+RESULTS:
+: recentf-open-files
+* Inline image height-width
+~#+ATTR_ORG: :width 500~
+We have to set emacs to not follow the actual width of the image. Then we can set the image width using ~#+ATTR_ORG: :width 500~.
+[[https://stackoverflow.com/questions/11670654/how-to-resize-images-in-org-mode][Source]]
+#+begin_src emacs-lisp
+(setq org-image-actual-width nil)
+#+end_src

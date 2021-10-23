@@ -28,7 +28,7 @@
  '(org-agenda-files
    '("~/Desktop/Everything/Others/LN-Manga Recommendations.org"))
  '(package-selected-packages
-   '(wallpaper auto-complete all-the-icons-ivy fly-checker smex yasnippet which-key vterm visual-fill-column use-package tree-sitter-langs rainbow-delimiters org-tree-slide org-bullets lsp-ui lsp-java lsp-ivy hungry-delete hide-mode-line helpful general flymake-grammarly flycheck-grammarly exwm expand-region evil-collection eglot doom-themes doom-modeline desktop-environment counsel company-box command-log-mode all-the-icons-ivy-rich ac-etags)))
+   '(lorem-ipsum multi-web-mode bufler quelpa-use-package multi-vterm lsp-treemacs helm helm-lsp dap-mode hydra lsp-mode projectile pulseaudio-control undo-tree wallpaper auto-complete all-the-icons-ivy fly-checker smex yasnippet which-key vterm visual-fill-column use-package tree-sitter-langs rainbow-delimiters org-tree-slide org-bullets lsp-ui lsp-java lsp-ivy hungry-delete hide-mode-line helpful general flymake-grammarly flycheck-grammarly exwm expand-region evil-collection eglot doom-themes doom-modeline desktop-environment counsel company-box command-log-mode all-the-icons-ivy-rich ac-etags)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
