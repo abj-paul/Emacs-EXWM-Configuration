@@ -1687,10 +1687,29 @@ C-c l l 	lorem-ipsum-insert-list
 
 #+RESULTS:
 : recentf-open-files
-* Inline image height-width
+* Set Inline Image Height-Width In Org-Mode
 ~#+ATTR_ORG: :width 500~
 We have to set emacs to not follow the actual width of the image. Then we can set the image width using ~#+ATTR_ORG: :width 500~.
 [[https://stackoverflow.com/questions/11670654/how-to-resize-images-in-org-mode][Source]]
 #+begin_src emacs-lisp
 (setq org-image-actual-width nil)
 #+end_src
+* Org Presentation
+~htmlize~ package is needed to highlight syntax in code. org-export using reveal.js does not highlight code by default. We need htmlize for that.
+#+begin_src emacs-lisp
+(use-package ox-reveal
+  :ensure t)
+(use-package htmlize) 
+#+end_src
+* Data Science
+package-install ein
+[[https://github.com/millejoh/emacs-ipython-notebook#ob-ein][Deatail here on github]]
+#+begin_src emacs-lisp
+(use-package ein
+  :init 
+  (setq ein:polymode t
+        ein:output-area-inlined-images t)
+  )
+#+end_src
+
+#+RESULTS:
