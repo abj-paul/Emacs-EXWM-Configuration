@@ -1713,3 +1713,26 @@ package-install ein
 #+end_src
 
 #+RESULTS:
+* Marginalia
+Its extends the existing completion framework features such as consult, selectrum etc.
+[[https://github.com/minad/marginalia][Github Link]]
+- Auto-completion for kill-ring
+- Can search in the kill-ring
+- Find-file will show preview of the file
+- Searching M-x lorem mode should give me all lorem commands. like lorem-ipsum-mode, lorem-ipsum-sadsad-mode etc.
+- Keep history of my searches(file search, command search) and suggest them at the top when we do C-x C-f or M-x
+
+#+begin_src emacs-lisp
+(use-package marginalia
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :bind (("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
+
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. Note that this forces loading the package.
+  (marginalia-mode))
+#+end_src
