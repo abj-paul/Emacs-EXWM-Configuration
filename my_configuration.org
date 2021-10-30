@@ -1736,3 +1736,9 @@ Its extends the existing completion framework features such as consult, selectru
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 #+end_src
+* ob-shell.el
+Its necessary for writing bash scripts inside org file.
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/")
+(load "ob-shell.el")
+#+end_src
