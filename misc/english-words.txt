@@ -863,6 +863,7 @@ Bartlett
 Barton
 Baruch
 Baryshnikov
+Bash
 Basel
 Basho
 Basie
