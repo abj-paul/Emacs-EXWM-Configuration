@@ -377,7 +377,7 @@ All the custom made functions are here so that they initialize before exwm (that
    ;(setq exwm-workspace-number 7l)
    (abj/dashboard-buffer)
    (abj/bind-vterm-to-workspace 2 "project-vterm" "~/Desktop/Everything/")
-   (abj/bind-vterm-to-workspace 5 "others-vterm" "~/.emacs.d/")
+   (abj/bind-vterm-to-workspace 5 "others-vterm" "~/gdrive-mount-point/")
    (abj/firefox-buffer)
    (abj/startup-window)
    (exwm-workspace-switch 1)
@@ -1745,3 +1745,20 @@ Its necessary for writing bash scripts inside org file.
 
 #+RESULTS:
 : t
+* Open VM and gdrive
+#+begin_src emacs-lisp
+ (defun abj/open-VM()
+   "Open dashboard and Daily-Routine.org in startup window."
+   (interactive)
+   (exwm-workspace-switch-create 6)
+   (find-file "~/Desktop/Everything/Virtual-Machine-Info/centos-cli.org" )
+   (split-window-horizontally)
+   (multi-vterm)
+   (multi-vterm-rename-buffer "Remote Virtual Machine")
+ )
+ 
+(global-set-key (kbd "C-c v m") 'abj/open-VM)
+#+end_src
+
+#+RESULTS:
+: abj/open-VM
