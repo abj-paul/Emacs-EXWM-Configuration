@@ -1682,11 +1682,21 @@ C-c l l 	lorem-ipsum-insert-list
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key (kbd "C-c r l") 'recentf-open-files)
+
+(defun abj/split-and-open()
+  (interactive)
+  (split-window-horizontally)
+  (recentf-open-files)
+)
+
+
+(global-set-key (kbd "C-c r s") 'abj/split-and-open)
 #+end_src
 
 #+RESULTS:
-: recentf-open-files
+: abj/split-and-open
 * Set Inline Image Height-Width In Org-Mode
 ~#+ATTR_ORG: :width 500~
 We have to set emacs to not follow the actual width of the image. Then we can set the image width using ~#+ATTR_ORG: :width 500~.
