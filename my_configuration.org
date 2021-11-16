@@ -1844,3 +1844,34 @@ Its necessary for writing bash scripts inside org file.
 #+begin_src emacs-lisp
 (use-package magit)
 #+end_src
+* Diagram 
+** plantuml
+[[https://plantuml.com/emacs][Installation guide and test usage]]
+Difficult syntax
+#+begin_src emacs-lisp
+(setq org-plantuml-jar-path (expand-file-name "/home/abhijit/.emacs.d/plantuml-1.2021.14.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+#+end_src
+** dot 
+   [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-dot.html][Source Guide]]
+   [[https://www.tonyballantyne.com/graphs.html][Detailed Guide with 1000 Examples]]
+   Super Handy to do graph stuffs.
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t))) ; this line activates dot
+#+end_src
+
+
+#+begin_src dot :file test.png
+graph graphname { 
+                a -- b; 
+                b -- c;
+                b -- d;
+                d -- a;
+        }
+#+end_src
+
+#+RESULTS:
+[[file:test.png]]
