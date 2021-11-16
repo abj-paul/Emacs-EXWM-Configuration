@@ -297,6 +297,7 @@ We use visual-fill-column to center org-mode buffers for a more pleasing writing
   :hook (org-mode . efs/org-mode-visual-fill))
 #+END_SRC
 * Development Environment
+  Always enable lsp mode before coding, using ~lsp~
 ** Additional Packages
 This section contains packages that is universally needed by many programming languages.
 *** Hungry Delete
@@ -1487,7 +1488,8 @@ Company mode eats up the ~space~ key so this small function saves us.
 #+begin_src emacs-lisp
   (exwm-input-set-key (kbd "s-a") 'counsel-linux-app)
 #+end_src
-* Video recording and screenshots
+* Video recording and screenshots 
+** From Guide
 [[https://www.mattduck.com/2021-06-exwm-screenshots.html][Awesome guide.]]
 
 These functions are bounded to keys-
@@ -1515,6 +1517,48 @@ They are loaded when exwm is being loaded. So go to that configuration for their
 
 #+RESULTSi
 : ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
+** Custom Screenshot
+   First, press ~s-r~ to go to ~char-mode~ if you are on a x-app buffer. Then use the set keybindings to first take ss and rename it.
+#+begin_src emacs-lisp 
+(defun abj/take-ss()
+  (interactive)
+  (setq screenshot-command (format "python3 /home/abhijit/manual-installation/take-ss.py rename-image.png"))
+  (shell-command screenshot-command)
+)
+
+(defun abj/rename-ss()
+  (interactive)
+  (setq screenshot-image-name (read-string "Enter file name: "))
+  (shell-command (format"mv /home/abhijit/inbox/screenshots/rename-image.png %s" screenshot-image-name))
+)
+
+(global-set-key (kbd "C-c s s") 'abj/take-ss)
+(global-set-key (kbd "C-c s r") 'abj/rename-ss)
+#+end_src
+
+#+RESULTS:
+: abj/rename-ss
+
+Put the python script in your desired directory and edit the ~screenshot-command~ variable based on that directory.
+#+begin_src python
+import subprocess
+import argparse
+
+my_parser = argparse.ArgumentParser(description="Take Screenshot of a selected area.")
+my_parser.add_argument("ImageName",metavar="image_name", type=str, help="The name of the screenshot.")
+#my_parser.add_argument("ImagePath",metavar="image_path", type=str, help="Path to the directory where the image will be saved")
+args = my_parser.parse_args()
+
+image_name = args.ImageName
+#image_dir=args.ImagePath+"/"
+#ps_image_dir = subprocess.run("pwd", stdout=subprocess.PIPE,text=True)
+#image_dir=ps_image_dir.stdout.rstrip()+"/"
+image_dir = "/home/abhijit/inbox/screenshots/"
+subprocess.run(["maim","-s",image_dir+image_name])
+
+#subprocess.run(["google-chrome", image_dir+image_name])
+print("Screenshor saved in "+image_dir)
+#+end_src
 * Letterbox mode for censoring
 [[https://github.com/pacha64/letterbox-mode][Source.]]
 ~M-x package-install letterbox-mode~
@@ -1755,7 +1799,7 @@ Its necessary for writing bash scripts inside org file.
 
 #+RESULTS:
 : t
-* Open VM and gdrive
+* Open VM
 #+begin_src emacs-lisp
  (defun abj/open-VM()
    "Open dashboard and Daily-Routine.org in startup window."
@@ -1763,8 +1807,10 @@ Its necessary for writing bash scripts inside org file.
    (exwm-workspace-switch-create 6)
    (find-file "~/Desktop/Everything/Virtual-Machine-Info/centos-cli.org" )
    (split-window-horizontally)
+   ;;(eshell)
    (multi-vterm)
-   (multi-vterm-rename-buffer "Remote Virtual Machine")
+   (rename-buffer "Remote Virtual Machine")
+   ;;(eshell-exec-visual "ls")
  )
  
 (global-set-key (kbd "C-c v m") 'abj/open-VM)
@@ -1772,3 +1818,29 @@ Its necessary for writing bash scripts inside org file.
 
 #+RESULTS:
 : abj/open-VM
+* Remote file editing using SSH
+  Simply do ~/ssh:root@192.168.1.177: /home/test-user/~ to go there. [[https://stackoverflow.com/questions/20624024/what-is-the-best-way-to-open-remote-files-with-emacs-and-ssh][Details]]
+- But vterm opens a ugly terminal in ssh. What to do? Use eshell! eshell works fine with ssh/tramp. [[https://stackoverflow.com/questions/1346688/ssh-through-emacs-shell][Details]] 
+#+begin_src emacs-lisp
+;(use-package ssh) ;; Not really the best one.
+#+end_src
+* WILL_WORK_ON_IT Custom eshell theme
+[[https://www.youtube.com/watch?v=kCCIudu53Zg][Video by System Crafters]]
+  counsel-color-emacs to get emacs colors.
+  describe-face to get the face name.
+  
+  disable-theme
+  load-theme doom-dracula
+#+begin_src emacs-lisp
+(use-package autothemer)
+#+end_src
+* Magit
+  C-x g -> magit-status
+  g -> refresh-magit
+  TAB/RET -> Fold/unfold a section
+  C-n/C-p
+  M-n/M-p
+  d -> diff-popup
+#+begin_src emacs-lisp
+(use-package magit)
+#+end_src
