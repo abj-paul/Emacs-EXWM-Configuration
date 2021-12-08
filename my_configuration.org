@@ -1875,3 +1875,39 @@ graph graphname {
 
 #+RESULTS:
 [[file:test.png]]
+* evil org-link
+#+begin_src emacs-lisp
+(defun abj/evil-org-mode-enable ()
+(interactive)
+(setq evil-want-minibuffer t)
+)
+
+(defun abj/evil-org-mode-disable ()
+(interactive)
+(setq evil-want-minibuffer nil)
+)
+
+#+end_src
+
+#+RESULTS:
+: abj/evil-org-mode-disable
+* Mathematics format in org mode 
+#+begin_src emacs-lisp
+(use-package ob-sagemath)
+#+end_src
+* C/C++ for org mode
+  Now we can execute a c++ code block inside org mode.
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((C . t)))
+#+end_src
+
+#+RESULTS:
+* Put bracket around the selected region
+[[https://stackoverflow.com/questions/2951797/wrapping-selecting-text-in-enclosing-characters-in-emacs][Source.]]
+By default, ~M-(~ works fine.
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-[") 'insert-pair)
+(global-set-key (kbd "M-{") 'insert-pair)
+(global-set-key (kbd "M-\"") 'insert-pair)
+#+end_src
