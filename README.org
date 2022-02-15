@@ -1,0 +1,23 @@
+* About
+  A easy but perfectly working EXWM emacs environment
+** Installation
+   Clone the git repository.
+#+begin_src bash
+   cd ~/.emacs.d/ && git clone https://github.com/abj-paul/Emacs-EXWM-Configuration/tree/ArchLinuxSystem
+
+   emacs #(Packages will be installed as emacs boots up)
+#+end_src
+ For EXWM to work, we need to do three things.
+ 1. Put ~EXWM.desktop~ in /usr/share/xsessions/
+ 2. Now we need a background for our transparent EXWM. Put your background in /usr/share/backgrounds/derrick-cooper-L505cPnmIds-unsplash.jpg
+ 3. Install feh, mpv, compton and xss-lock
+#+begin_src bash
+  cp EXWM.desktop /usr/share/xsessions/
+  cp derrick-cooper-L505cPnmIds-unsplash.jpg /usr/share/backgrounds/derrick-cooper-L505cPnmIds-unsplash.jpg
+
+  sudo apt install feh mpv compton xss-lock
+#+end_src
+* Features
+  We do not enable anything by default and we have very few packages here. More package makes it bloated if you dont know how each of them work.
+  - The ~config.org~ has good documentation, specially in the packages added later. So to get idea on how a certain package works, do go through that.
+  - Enable Semantic mode and flychcker when you are coding.
