@@ -112,40 +112,43 @@
   #+end_src
 * Evil and evil collection
   #+begin_src emacs-lisp
-    (use-package evil
-      :ensure t
-      :init
-      (setq evil-want-integration t)
-      (setq evil-want-keybinding nil)
-      ;(setq evil-want-C-u-scroll t)
-      (setq evil-want-C-i-jump nil)
-      :config
-      (evil-mode 1)
-      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-      )
-	       (evil-set-initial-state 'message-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal)
+	(use-package evil
+	  :ensure t
+	  :init
+	  (setq evil-want-integration t)
+	  (setq evil-want-keybinding nil)
+	  ;(setq evil-want-C-u-scroll t)
+	  (setq evil-want-C-i-jump nil)
+	  :config
+	  (evil-mode 1)
+	  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+	  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+	  )
+		   (evil-set-initial-state 'message-buffer-mode 'normal)
+	(evil-set-initial-state 'dashboard-mode 'normal)
 
-    (defun dw/dont-arrow-me-bro ()
-      (interactive)
-      (message "Arrows keys are bad, you know?"))
-    ;; Disable arrow keys in normal and visual modes
-    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<backspace>") 'abj/dont-use-backspace)
+	(defun dw/dont-arrow-me-bro ()
+	  (interactive)
+	  (message "Arrows keys are bad, you know?"))
+	;; Disable arrow keys in normal and visual modes
+	(define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+	(define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+	(define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+	(define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+	(evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+	(evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+	(evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+	(evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+	(evil-global-set-key 'motion (kbd "<backspace>") 'abj/dont-use-backspace)
 
-    (use-package evil-collection
-    :ensure t
-    :after evil
-    :config
-    (evil-collection-init))
+	(use-package evil-collection
+	:ensure t
+	:after evil
+	:config
+	(evil-collection-init))
+
+; Tab will act like tab in insert mode
+;    (define-key evil-insert-state-map (kbd "TAB") (insert "\t"))
   #+end_src
 
   #+RESULTS:
@@ -240,6 +243,10 @@ We use visual-fill-column to center org-mode buffers for a more pleasing writing
 (use-package visual-fill-column
   :hook (org-mode . efs/org-mode-visual-fill))
 #+END_SRC
+** Collapse Org Headers When Opening a file
+   #+begin_src emacs-lisp
+(setq org-startup-folded t)
+   #+end_src
 * Custom-Made Functions
 All the custom made functions are here so that they initialize before exwm (thats where we use them, mainly)
 ** Start-up window with dashboard and schedeule
@@ -821,3 +828,177 @@ print("Screenshor saved in "+image_dir)
 
 #+RESULTS:
 : abj/split-and-open
+
+* switch-window using asdfg
+It's unnoticeable if you have <3 panes open, but with 3 or more, upon pressing =C-x o=
+you will notice how your buffers turn a solid color and each buffer is asigned a letter
+(the list below shows the letters, you can modify them to suit your liking), upon pressing
+a letter asigned to a window, your will be taken to said window, easy to remember, quick to use
+and most importantly, it annihilates a big issue I had with emacs. An alternative is =ace-window=,
+however by default it also changes the behaviour of =C-x o= even if only 2 windows are open,
+this is bad, it also works less well with =exwm= for some reason.
+#+BEGIN_SRC emacs-lisp
+(use-package switch-window
+  :ensure t
+  :config
+    (setq switch-window-input-style 'minibuffer)
+    (setq switch-window-increase 4)
+    (setq switch-window-threshold 2)
+    (setq switch-window-shortcut-style 'qwerty)
+    (setq switch-window-qwerty-shortcuts
+        '("a" "s" "d" "f" "j" "k" "l" "i" "o"))
+  :bind
+    ([remap other-window] . switch-window))
+#+END_SRC
+
+#+RESULTS:
+: switch-window
+
+* Following window splits
+After you split a window, your focus remains in the previous one.
+This annoyed me so much I wrote these two, they take care of it.
+#+BEGIN_SRC emacs-lisp
+  (defun split-and-follow-horizontally ()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+  (defun split-and-follow-vertically ()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+END_SRC
+
+#+RESULTS:
+: split-and-follow-vertically
+
+* swiper 
+I like me some searching, the default search is very meh. In emacs, you mostly use search to get around your buffer, much like with avy, but sometimes it doesn't hurt to search for entire words or mode, swiper makes sure this is more efficient.
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind ("C-s" . 'swiper))
+#+END_SRC
+
+* Kill current buffer without confirmation
+Doing =C-x k= should kill the current buffer at all times, we have =ibuffer= for more sophisticated thing.
+#+BEGIN_SRC emacs-lisp
+  (defun kill-current-buffer ()
+    "Kills the current buffer."
+    (interactive)
+    (kill-buffer (current-buffer)))
+  (global-set-key (kbd "C-x k") 'kill-current-buffer)
+#+END_SRC
+
+#+RESULTS:
+: kill-current-buffer
+
+* Ibuffer to kill multiple buffers
+  I don't understand how ibuffer isn't the default option by now.
+It's vastly superior in terms of ergonomics and functionality, you can delete buffers, rename buffer, move buffers, organize buffers etc.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-k") 'ibuffer)
+#+END_SRC
+* Enable line number on programming modes
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'linum-mode)
+#+end_src
+
+#+RESULTS:
+| linum-mode | linum-relative-mode |
+* Golden Ratio
+Its a must-to-have package. It widens the split screen you work on. And it auto-scales the width of the split. Very amazing package. 
+  #+begin_src emacs-lisp
+    (use-package golden-ratio
+      :config
+      (golden-ratio-mode 1))
+  #+end_src
+* Indentation in  C++ code
+  [[https://stackoverflow.com/questions/823745/how-do-i-make-emacs-auto-indent-my-c-code][source]]
+#+begin_src emacs-lisp
+  (defun set-ENTER-indentation ()
+    (local-set-key (kbd "RET") 'newline-and-indent))
+
+  (add-hook 'c-mode-hook 'set-ENTER-indentation)
+#+end_src
+
+#+RESULTS:
+| set-ENTER-indentation |
+* Drawing - Canvas Mode
+  Download the svg.el file from the github and put it in your emacs directory. And poof, now simply load and use it.
+  [[https://www.youtube.com/watch?v=oj2OR5ytHxY][How to use it]]
+#+begin_src emacs-lisp
+  (load "~/.emacs.d/svg.el")
+(require 'svg)
+#+end_src
+
+#+RESULTS:
+: svg
+
+* Marginalia
+Its extends the existing completion framework features such as consult, selectrum etc.
+[[https://github.com/minad/marginalia][Github Link]]
+- Auto-completion for kill-ring
+- Can search in the kill-ring
+- Find-file will show preview of the file
+- Searching M-x lorem mode should give me all lorem commands. like lorem-ipsum-mode, lorem-ipsum-sadsad-mode etc.
+- Keep history of my searches(file search, command search) and suggest them at the top when we do C-x C-f or M-x
+
+#+begin_src emacs-lisp
+(use-package marginalia
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :bind (("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
+
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. Note that this forces loading the package.
+  (marginalia-mode))
+#+end_src
+
+#+RESULTS:
+: marginalia-cycle
+
+* org-roam
+  org-roam, from v0.2, uses a database to better manage all these info efficiently. So when we install the package, the database program will also automatically be compiled alongside it. So dont be afraid from all the weird messages!(SQLite)
+  Check the value of the variable ~org-roam--sqlite-available-p~ to check whether or not the database was properly installed.
+
+We will add some customization now. We should always manually create a ~org-roam~ directory. Its the places where node org files will be created and stored.
+~org-roam-node-insert~ makes it easier to create a node on the go. And to see a list of all possible nodes usig ~ivy~ or similar completion framework, we need ~org-roam-node-find.~ 
+As for ~org-roam-buffer-toggle~, it perhaps does THIS.
+
+But to make it easier to auto-complete nodes when writing, we enable ~org-roam-at-point-everywhere~ and bind a keybinding for auto-completion-at-point. Do note that you need to reload emacs to have the new keybinding ~C-M-i~ working.
+
+#+begin_src emacs-lisp
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/Org-Roam-Files")
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i"   . completion-at-point))
+  :config
+  (org-roam-setup))
+#+end_src
+
+[[id:fc5dd8c2-08c2-423f-9443-b95a758bec38][How to use Org Roam]] is described in detail in this node.
+
+* Flychecer
+  #+begin_src emacs-lisp
+    (use-package flycheck
+      :ensure t)
+  #+end_src
+
+* YASnippet
+[[id:04281be6-f970-42ee-bea0-622a329ab08e][How to use YaSnippet]]
