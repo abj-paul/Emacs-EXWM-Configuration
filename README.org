@@ -1,5 +1,6 @@
 * About
   A easy but perfectly working EXWM emacs environment
+  [[file:demo.png]]
 ** Installation
    Clone the git repository.
 #+begin_src bash
