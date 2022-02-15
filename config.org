@@ -1,0 +1,823 @@
+#+SEQ_TODO: THIS_IS_GOLD WILL_WORK_ON_IT | INCOMPLETE DONE
+
+
+* Global Settings
+  #+begin_src emacs-lisp
+    (show-paren-mode 1)
+    (toggle-truncate-lines 1)
+
+(setq org-confirm-babel-evaluate nil)
+(global-set-key "\C-ca" 'org-agenda)
+
+  #+end_src
+
+  #+RESULTS:
+  : org-agenda
+** Transparency
+      Make emacs transparent.
+#+begin_src text
+(set-frame-parameter (selected-frame) 'alpha `(90,90))
+(add-to-list 'default-frame-alist `(alpha . (90, 90)))
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+#+RESULTS:
+: ((fullscreen . maximized) (alpha 90 90) (vertical-scroll-bars) (left-fringe . 3) (right-fringe . 3) (buffer-predicate . exwm-layout--other-buffer-predicate))
+** Get rid of menu fringe sidebar etc
+   #+begin_src emacs-lisp
+(setq inhibit-startup-message t) ;; Hide welcome buffer
+(scroll-bar-mode -1)             ;; Disable visible scrollbar
+(tool-bar-mode -1)               ;; Disable the toolbar
+(tooltip-mode -1)                ;; Disable tooltips (pop-up help text for buttons and menu-items). When disabled shows tooltips in echo area
+(set-fringe-mode 10)             ;; Set right and left edge fringes (empty borders) in px
+(menu-bar-mode -1)               ;; Disable menu bar
+
+(setq visible-bell t)            ;; Set up visible bell
+
+   #+end_src
+
+   #+RESULTS:
+   : t
+** Show Line Number
+   #+begin_src emacs-lisp
+(global-visual-line-mode)
+   #+end_src
+   Alternative:
+   #+begin_src text
+(global-display-line-numbers-mode t)
+; Disable line numbers for some modes
+(dolist (mode '(;;org-mode-hook
+                org-agenda-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                eshell-mode-hook
+                vterm-mode-hook
+                treemacs-mode-hook
+                compilation-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+   #+end_src
+
+* Ivy and ivy-rich
+   
+  #+begin_src emacs-lisp
+    (use-package ivy
+      :ensure t
+      :config
+      (ivy-mode 1))
+    (use-package ivy-rich
+      :init
+      (ivy-rich-mode 1)
+      )
+  #+end_src
+
+  #+RESULTS:
+* counsel
+  For nice minibuffer gui that comes from M-x.
+  #+begin_src emacs-lisp
+    (use-package counsel
+      :ensure t
+      :config
+      (counsel-mode 1))
+  #+end_src
+
+  #+RESULTS:
+  : t
+* smex
+  It saves M-x history. ITs automatically used by Counsel-M-x.
+  #+begin_src emacs-lisp
+    (use-package smex
+      :ensure t)
+  #+end_src
+* Swiper
+  #+begin_src emacs-lisp
+    (use-package swiper
+      :ensure t)
+    (global-set-key "\C-s" 'swiper)
+  #+end_src
+
+  #+RESULTS:
+  : swiper
+
+* Helpful and which key
+  Helpful enhances *help* files.
+  #+begin_src emacs-lisp
+    (use-package helpful
+      :ensure t)
+    (use-package which-key
+      :ensure t
+      :config
+      (setq which-key-idle-delay 0.4)
+      (which-key-mode 1))
+  #+end_src
+* Evil and evil collection
+  #+begin_src emacs-lisp
+    (use-package evil
+      :ensure t
+      :init
+      (setq evil-want-integration t)
+      (setq evil-want-keybinding nil)
+      ;(setq evil-want-C-u-scroll t)
+      (setq evil-want-C-i-jump nil)
+      :config
+      (evil-mode 1)
+      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+      )
+	       (evil-set-initial-state 'message-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal)
+
+    (defun dw/dont-arrow-me-bro ()
+      (interactive)
+      (message "Arrows keys are bad, you know?"))
+    ;; Disable arrow keys in normal and visual modes
+    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<backspace>") 'abj/dont-use-backspace)
+
+    (use-package evil-collection
+    :ensure t
+    :after evil
+    :config
+    (evil-collection-init))
+  #+end_src
+
+  #+RESULTS:
+  : abj/dont-use-backspace
+* Doom Theme
+  #+begin_src emacs-lisp
+    (use-package doom-themes
+      :ensure t
+      :init
+      (load-theme 'doom-nord t))
+  #+end_src
+
+  #+RESULTS:
+  : t
+* All The Icons
+Show icons. Doom modeline and counsel-M-x uses them.
+  #+begin_src emacs-lisp
+    (use-package all-the-icons
+      :ensure t)
+
+    (all-the-icons-wicon "tornado" :face 'all-the-icons-blue)
+  #+end_src
+
+  #+RESULTS:
+  : 
+* vterm and multi-vterm
+  #+begin_src emacs-lisp
+    (use-package vterm
+	  :ensure t)
+    (use-package multi-vterm
+      :ensure t)
+  #+end_src
+
+* Org mode
+** Better Font Face
+   The efs/org-font-setup function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we’re editing a document in org-mode. We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
+*** code
+#+BEGIN_SRC emacs-lisp
+(defun efs/org-font-setup ()
+;; Replace list hyphen with dot
+(font-lock-add-keywords 'org-mode
+'(("^ *\\([-]\\) "
+(0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+;; Set faces for heading levels
+(dolist (face '((org-level-1 . 1.2)
+(org-level-2 . 1.1)
+(org-level-3 . 1.05)
+(org-level-4 . 1.0)
+(org-level-5 . 1.1)
+(org-level-6 . 1.1)
+(org-level-7 . 1.1)
+(org-level-8 . 1.1)))
+(set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+;; Ensure that anything that should be fixed-pitch in Org files appears that way
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+#+END_SRC
+
+#+RESULTS:
+: efs/org-font-setup
+
+** Org Bullets With Some Tweaks
+   org-bullets replaces the heading stars in org-mode buffers with nicer looking characters that you can control.
+*** code
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+END_SRC
+
+#+RESULTS:
+| org-bullets-mode | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+
+** Center Org Files
+We use visual-fill-column to center org-mode buffers for a more pleasing writing experience as it centers the contents of the buffer horizontally to seem more like you are editing a document. This is really a matter of personal preference so you can remove the block below if you don’t like the behavior.
+*** code
+#+BEGIN_SRC emacs-lisp
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+#+END_SRC
+* Custom-Made Functions
+All the custom made functions are here so that they initialize before exwm (thats where we use them, mainly)
+** Start-up window with dashboard and schedeule
+ #+begin_src emacs-lisp
+    ;(progn 
+    ;    (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+    ;    (split-window-horizontally)
+    ;    (dashboard-refresh-buffer)
+    ;)
+    ;; Adding this function to exwm
+    (defun abj/load-gdrive ()
+      (interactive)
+   (shell-command "rclone mount --daemon my_gdrive: ~/gdrive-mount-point/")
+      )
+    (defun abj/initialize-rsync ()
+      (interactive)
+      (shell-command "rsync -azP ~/gdrive-mount-point/home-remote/Everything/ ~/Desktop/Everything/"))
+
+    (defun abj/startup-window()
+      "Open dashboard and Daily-Routine.org in startup window."
+      (interactive)
+      (exwm-workspace-switch-create 1)
+      (find-file "~/Desktop/Everything/Emacs/Daily-Routine.org" )
+      (split-window-horizontally)
+      ;(dashboard-setup-startup-hook)
+      ;(dashboard-refresh-buffer)
+      (find-file "~/Desktop/Everything/Emacs/Steps.org" )
+    )
+
+ #+end_src
+** Bind buffer to workspace
+ #+begin_src emacs-lisp
+    (defun abj/bind-vterm-to-workspace(workspace-index buffer-name dir)
+      "Bind a buffer to a workspace in EXWM"
+      (interactive)
+      (exwm-workspace-switch-create workspace-index)
+      (multi-vterm)
+      (let ((default-buffer-name "*vterminal<1>*"))
+      (progn
+      (comint-send-string (get-buffer-process default-buffer-name) (format "cd %s\n" dir))
+      (with-current-buffer default-buffer-name
+	(rename-buffer buffer-name))
+	))
+	)
+    (defun abj/firefox-buffer()
+    "Opens firefox in workspace 4 at startup"
+      (interactive)
+      (exwm-workspace-switch-create 4)
+      (start-process-shell-command "firefox" "global-firefox" "firefox")
+   )
+   (defun abj/dashboard-buffer()
+    "Opens dashboard in workspace 3 at startup"
+    (interactive)
+    (exwm-workspace-switch-create 3)
+    (dashboard-setup-startup-hook)
+    (dashboard-refresh-buffer)
+    )
+
+    (defun abj/init-workspace-bounded-buffers()
+      "Initializes buffers in workspaces"
+      (interactive)
+      ;(setq exwm-workspace-number 7l)
+      (abj/dashboard-buffer)
+      (abj/bind-vterm-to-workspace 2 "project-vterm" "~/Desktop/Everything/")
+      (abj/bind-vterm-to-workspace 5 "others-vterm" "~/gdrive-mount-point/")
+      ;(abj/firefox-buffer)
+      (abj/load-gdrive)
+      (abj/startup-window)
+      (exwm-workspace-switch 1)
+    )
+    ;(bind-buffer-to-workspace)
+ #+end_src
+
+* Window Manager(EXWM)
+Everything regarding the WM or DE-like functionality is bundled here, remove the entire section if you do not wish to use =exwm=.
+
+** exwm
+   The only time I actually had to use comments, this is for ease of removal if you happen to not like exwm.
+*** Installation
+#+BEGIN_SRC emacs-lisp
+(defun efs/set-wallpaper ()
+    (interactive)
+    ;; NOTE: You will need to update this to a valid background path!
+    (start-process-shell-command
+        "feh" nil  "feh --bg-scale /usr/share/backgrounds/derrick-cooper-L505cPnmIds-unsplash.jpg"))
+  (defun efs/configure-window-by-class ()
+    (interactive)
+    (pcase exwm-class-name
+      ;("Firefox" (exwm-workspace-move-window 2))
+      ("Sol" (exwm-workspace-move-window 3))
+      ("mpv" (exwm-floating-toggle-floating)
+             (exwm-layout-toggle-mode-line))))
+  (defun efs/exwm-update-class ()
+    (exwm-workspace-rename-buffer exwm-class-name))
+
+  (defun efs/exwm-update-title ()
+    (pcase exwm-class-name
+      ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))))
+
+
+  (use-package exwm
+    :ensure t
+    :config
+      ;; necessary to configure exwm manually
+      (require 'exwm-config)
+
+      ;; fringe size, most people prefer 1 
+      (fringe-mode 3)
+      
+      ;; emacs as a daemon, use "emacsclient <filename>" to seamlessly edit files from the terminal directly in the exwm instance
+      (server-start)
+      ;; Transparency
+      (set-frame-parameter (selected-frame) 'alpha `(90,90))
+      (add-to-list 'default-frame-alist `(alpha . (90, 90)))
+      (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+      (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+      ;; this fixes issues with ido mode, if you use helm, get rid of it
+      ;(exwm-config-ido)
+      (efs/set-wallpaper)
+      
+;; a number between 1 and 9, exwm creates workspaces dynamically so I like starting out with 1
+      ;(setq exwm-workspace-number 6)
+
+      ;; When window "class" updates, use it to set the buffer name
+      (add-hook 'exwm-update-class-hook #'efs/exwm-update-class)
+            
+      ;; When window title updates, use it to set the buffer name
+      (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
+
+      ;; Configure windows as they're created
+      (add-hook 'exwm-manage-finish-hook #'efs/configure-window-by-class)
+
+      ;; Trying to make workspaces load faster.
+      ;(exwm-workspace-switch-create 0)
+      ;; this is a way to declare truly global/always working keybindings
+      ;; this is a nifty way to go back from char mode to line mode without using the mouse
+      
+      (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+      (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
+      (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
+
+      ;; the next loop will bind s-<number> to switch to the corresponding workspace
+      (dotimes (i 10)
+        (exwm-input-set-key (kbd (format "s-%d" i))
+                            `(lambda ()
+                               (interactive)
+                               (exwm-workspace-switch-create ,i))))
+
+      ;; the simplest launcher, I keep it in only if dmenu eventually stopped working or something
+      (exwm-input-set-key (kbd "s-&")
+                          (lambda (command)
+                            (interactive (list (read-shell-command "$ ")))
+                            (start-process-shell-command command nil command)))
+
+      ;; an easy way to make keybindings work *only* in line mode
+      (push ?\C-q exwm-input-prefix-keys)
+      (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+      
+
+      
+      	
+      ;; simulation keys are keys that exwm will send to the exwm buffer upon inputting a key combination
+      (exwm-input-set-simulation-keys
+       '(
+         ;; movement
+         ;([?\C-b] . left)
+         ;([?\M-b] . C-left)
+         ;([?\C-f] . right)
+         ;([?\M-f] . C-right)
+         ;([?\C-p] . up)
+         ;([?\C-n] . down)
+         ;([?\C-a] . home)
+         ;([?\C-e] . end)
+         ;([?\M-v] . prior)
+         ;([?\C-v] . next)
+         ;([?\C-d] . delete)
+         ;([?\C-k] . (S-end delete))
+         ;; cut/paste
+         ;([?\C-w] . ?\C-x)
+         ([?\M-w] . ?\C-c)
+         ;([?\C-y] . ?\C-v)
+         ;; search
+         ([?\C-s] . ?\C-f)))
+
+     ;; These keys should always pass through to Emacs
+
+      ;; this little bit will make sure that XF86 keys work in exwm buffers as well
+      (dolist (k '(XF86AudioLowerVolume
+                 XF86AudioRaiseVolume
+                 XF86PowerOff
+                 XF86AudioMute
+                 XF86AudioPlay
+                 XF86AudioStop
+                 XF86AudioPrev
+                 XF86AudioNext
+                 XF86ScreenSaver
+                 XF68Back
+                 XF86Forward
+                 Scroll_Lock
+                 print))
+      (cl-pushnew k exwm-input-prefix-keys))
+      
+      
+      ;(setq exwm-input-global-keys
+      ;`(;; Various other keys...
+      
+      ;; Prompt for a selection and take a screenshot
+
+(setq exwm-input-global-keys
+      `(;; Various other keys...
+
+        ;; Prompt for a selection and take a screenshot
+        (,(kbd "s-$") . md/screenshot-image-selection)
+        ;; Prompt for a selectoin and start a video
+        (,(kbd "s-%") . md/screenshot-video-selection-start)
+        ;; Stop the video
+        (,(kbd "s-^") . md/screenshot-video-stop)))
+
+      (exwm-enable)
+      (abj/init-workspace-bounded-buffers)
+      ;; this just enables exwm, it started automatically once everything is ready
+      ;(define-prefix-command 'ss-map nil "ss, record-")
+      ;:bind-keymap ((kbd "s-r") . ss-map)
+      ;:bind ( :map ss-map
+       ; ("s" . md/screenshot-image-selection)
+       ; ("v" . md/screenshot-video-selection-start)
+       ; ("e" . md/screenshot-video-stop)
+;	)
+)
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Launchers
+Since I do not use a GUI launcher and do not have an external one like dmenu or rofi,
+I figured the best way to launch my most used applications would be direct emacsy
+keybindings.
+
+*** dmenu for emacs
+Who would've thought this was available, together with ido-vertical it's a nice large menu
+with its own cache for most launched applications.
+#+BEGIN_SRC emacs-lisp
+  (use-package dmenu
+    :ensure t
+    :bind
+      ("s-SPC" . 'dmenu))
+#+END_SRC
+
+*** Functions to start processes
+I guess this goes without saying but you absolutely have to change the arguments
+to suit the software that you are using. What good is a launcher for discord if you don't use it at all.
+#+BEGIN_SRC emacs-lisp
+  (defun exwm-async-run (name)
+    (interactive)
+    (start-process name nil name))
+
+  (defun daedreth/launch-discord ()
+    (interactive)
+    (exwm-async-run "discord"))
+
+  (defun daedreth/launch-browser ()
+    (interactive)
+    (exwm-async-run "qutebrowser"))
+
+  (defun daedreth/lock-screen ()
+    (interactive)
+    (exwm-async-run "slock"))
+
+  (defun daedreth/shutdown ()
+    (interactive)
+    (start-process "halt" nil "sudo" "halt"))
+#+END_SRC
+
+*** Keybindings to start processes
+These can be modified as well, suit yourself.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "s-d") 'daedreth/launch-discord)
+  (global-set-key (kbd "<s-tab>") 'daedreth/launch-browser)
+  (global-set-key (kbd "s-l") 'daedreth/lock-screen)
+  (global-set-key (kbd "<XF86PowerOff>") 'daedreth/shutdown)
+#+END_SRC
+
+** Audio controls
+This is a set of bindings to my XF86 keys that invokes pulsemixer with the correct parameters
+
+*** Volume modifier
+It goes without saying that you are free to modify the modifier as you see fit, 4 is good enough for me though.
+#+BEGIN_SRC emacs-lisp
+(defconst volumeModifier "4")
+#+END_SRC
+
+*** Functions to start processes
+#+BEGIN_SRC emacs-lisp
+  (defun audio/mute ()
+    (interactive)
+    (start-process "audio-mute" nil "pulsemixer" "--toggle-mute"))
+
+  (defun audio/raise-volume ()
+    (interactive)
+    (start-process "raise-volume" nil "pulsemixer" "--change-volume" (concat "+" volumeModifier)))
+
+  (defun audio/lower-volume ()
+    (interactive)
+    (start-process "lower-volume" nil "pulsemixer" "--change-volume" (concat "-" volumeModifier)))
+#+END_SRC
+
+*** Keybindings to start processes
+You can also change those if you'd like, but I highly recommend keeping 'em the same, chances are, they will just work.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<XF86AudioMute>") 'audio/mute)
+(global-set-key (kbd "<XF86AudioRaiseVolume>") 'audio/raise-volume)
+(global-set-key (kbd "<XF86AudioLowerVolume>") 'audio/lower-volume)
+#+END_SRC
+
+** Screenshots
+I don't need scrot to take screenshots, or shutter or whatever tools you might have. This is enough.
+These won't work in the terminal version or the virtual console, obvious reasons.
+// NOT WORKING FOR ME.
+
+*** Screenshotting the entire screen
+#+BEGIN_SRC emacs-lisp
+  (defun daedreth/take-screenshot ()
+    "Takes a fullscreen screenshot of the current workspace"
+    (interactive)
+    (when window-system
+    (loop for i downfrom 3 to 1 do
+          (progn
+            (message (concat (number-to-string i) "..."))
+            (sit-for 1)))
+    (message "Cheese!")
+    (sit-for 1)
+    (start-process "screenshot" nil "import" "-window" "root" 
+               (concat (getenv "HOME") "/" (subseq (number-to-string (float-time)) 0 10) ".png"))
+    (message "Screenshot taken!")))
+  (global-set-key (kbd "<print>") 'daedreth/take-screenshot)
+#+END_SRC
+
+#+RESULTS:
+: daedreth/take-screenshot
+
+*** Screenshotting a region
+#+BEGIN_SRC emacs-lisp
+  (defun daedreth/take-screenshot-region ()
+    "Takes a screenshot of a region selected by the user."
+    (interactive)
+    (when window-system
+    (call-process "import" nil nil nil ".newScreen.png")
+    (call-process "convert" nil nil nil ".newScreen.png" "-shave" "1x1"
+                  (concat (getenv "HOME") "/" (subseq (number-to-string (float-time)) 0 10) ".png"))
+    (call-process "rm" nil nil nil ".newScreen.png")))
+  (global-set-key (kbd "<Scroll_Lock>") 'daedreth/take-screenshot-region)
+#+END_SRC
+
+** Default browser
+I use qutebrowser, so that's what I'll set up.
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "firefox")
+#+END_SRC
+
+* Dashboard
+I should use it as a side window along with schedeules to make sure i keep tract of current projects.
+This is your new startup screen, together with projectile it works in unison and
+provides you with a quick look into your latest projects and files.
+Change the welcome message to whatever string you want and
+change the numbers to suit your liking, I find 5 to be enough.
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+      (dashboard-setup-startup-hook)
+      ;;(setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
+      (setq dashboard-items '((recents  . 5)
+                              (projects . 5)))
+      (setq dashboard-banner-logo-title "")
+      )
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Modeline
+The modeline is the heart of emacs, it offers information at all times, it's persistent
+and verbose enough to gain a full understanding of modes and states you are in.
+
+
+Due to the fact that we attempt to use emacs as a desktop environment replacement,
+and external bar showing the time, the battery percentage and more system info would be great to have.
+I have however abandoned polybar in favor of a heavily modified modeline, this offers me more space
+on the screen and better integration.
+
+
+One modeline-related setting that is missing and is instead placed at the bottom is =diminish=.
+** Spaceline!
+I may not use spacemacs, since I do not like evil-mode and find spacemacs incredibly bloated and slow,
+however it would be stupid not to acknowledge the best parts about it, the theme and their modified powerline setup.
+
+This enables spaceline, it looks better and works very well with my theme of choice.
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+      (setq spaceline-buffer-encoding-abbrev-p nil)
+      (setq spaceline-line-column-p nil)
+      (setq spaceline-line-p nil)
+      (setq powerline-default-separator (quote arrow))
+      (spaceline-spacemacs-theme))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** No separator!
+#+BEGIN_SRC emacs-lisp
+  (setq powerline-default-separator nil)
+#+END_SRC
+
+#+RESULTS:
+
+** Cursor position
+Show the current line and column for your cursor.
+We are not going to have =relative-linum-mode= in every major mode, so this is useful.
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format nil)
+  (setq display-time-format "%H:%M - %d %B %Y")
+#+END_SRC
+
+#+RESULTS:
+: %H:%M - %d %B %Y
+
+*** Enabling the mode
+This turns on the clock globally.
+#+BEGIN_SRC emacs-lisp
+  (display-time-mode 1)
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Battery indicator
+A package called =fancy-battery= will be used if we are in GUI emacs, otherwise the built in battery-mode will be used.
+Fancy battery has very odd colors if used in the tty, hence us disabling it.
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    :ensure t
+    :config
+      (setq fancy-battery-show-percentage t)
+      (setq battery-update-interval 15)
+      (if window-system
+        (fancy-battery-mode)
+        (display-battery-mode)))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** System monitor
+A teeny-tiny system monitor that can be enabled or disabled at runtime, useful for checking performance
+with power-hungry processes in ansi-term
+
+symon can be toggled on and off with =Super + h=.
+#+BEGIN_SRC emacs-lisp
+  (use-package symon
+    :ensure t
+    :bind
+    ("s-h" . symon-mode))
+#+END_SRC
+
+#+RESULTS:
+: symon-mode
+
+* Video recording and screenshots 
+** From Guide
+[[https://www.mattduck.com/2021-06-exwm-screenshots.html][Awesome guide.]]
+
+These functions are bounded to keys-
+Super-Shift-4
+Super-Shift-5
+Super-Shift-6
+They are loaded when exwm is being loaded. So go to that configuration for their implmenetattion.
+
+#+begin_src emacs-lisp
+(defun md/screenshot-image-selection ()
+  (interactive)
+  (shell-command "/home/abhijit/gdrive-mount-point/home-remote/,screenshot.sh --image-selection"))
+
+(defun md/screenshot-video-selection-start ()
+  (interactive)
+  (shell-command "/home/abhijit/gdrive-mount-point/home-remote/,screenshot.sh --video-selection-start"))
+
+(defun md/screenshot-video-stop ()
+  (interactive)
+  (shell-command "/home/abhijit/gdrive-mount-point/home-remote/,screenshot.sh --video-stop"))
+#+end_src
+
+#+RESULTS:
+: md/screenshot-video-stop
+
+#+RESULTSi
+: ((sc-r-i . md/screenshot-image-selection) (sc-r-v . md/screenshot-video-selection-start) (sc-r-s . md/screenshot-video-stop))
+** Custom Screenshot
+   First, press ~s-r~ to go to ~char-mode~ if you are on a x-app buffer. Then use the set keybindings to first take ss and rename it.
+#+begin_src emacs-lisp 
+  (defun abj/take-ss()
+    (interactive)
+    (setq screenshot-command (format "python3 /home/abhijit/gdrive-mount-point/home-remote/take-ss.py rename-image.png"))
+    (shell-command screenshot-command)
+  )
+
+  (defun abj/rename-ss()
+    (interactive)
+    (setq screenshot-image-name (read-string "Enter file name: "))
+    (shell-command (format "mkdir -p image-source"))
+    (shell-command (format "mv /home/abhijit/Local/inbox/screenshots/rename-image.png %s/%s" "image-source/" screenshot-image-name))
+  )
+
+  (global-set-key (kbd "C-c s s") 'abj/take-ss)
+  (global-set-key (kbd "C-c s r") 'abj/rename-ss)
+#+end_src
+
+#+RESULTS:
+: abj/rename-ss
+
+Put the python script in your desired directory and edit the ~screenshot-command~ variable based on that directory.
+#+begin_src python
+import subprocess
+import argparse
+
+my_parser = argparse.ArgumentParser(description="Take Screenshot of a selected area.")
+my_parser.add_argument("ImageName",metavar="image_name", type=str, help="The name of the screenshot.")
+#my_parser.add_argument("ImagePath",metavar="image_path", type=str, help="Path to the directory where the image will be saved")
+args = my_parser.parse_args()
+
+image_name = args.ImageName
+#image_dir=args.ImagePath+"/"
+#ps_image_dir = subprocess.run("pwd", stdout=subprocess.PIPE,text=True)
+#image_dir=ps_image_dir.stdout.rstrip()+"/"
+image_dir = "/home/abhijit/Local/inbox/screenshots/"
+subprocess.run(["maim","-s",image_dir+image_name])
+
+#subprocess.run(["google-chrome", image_dir+image_name])
+print("Screenshor saved in "+image_dir)
+#+end_src
+
+* See a list of recently-opened file
+  [[https://stackoverflow.com/questions/50417/how-do-i-get-list-of-recent-files-in-gnu-emacs][Source]]
+#+begin_src emacs-lisp
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key (kbd "C-c r l") 'recentf-open-files)
+
+(defun abj/split-and-open()
+  (interactive)
+  (split-window-horizontally)
+  (recentf-open-files)
+)
+
+
+(global-set-key (kbd "C-c r s") 'abj/split-and-open)
+#+end_src
+
+#+RESULTS:
+: abj/split-and-open

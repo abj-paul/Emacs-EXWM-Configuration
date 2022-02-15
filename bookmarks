@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("pdf template"
+ (filename . "~/Desktop/Everything/Others/pdf-template.org")
+ (front-context-string . "#+OPTIONS: \\n:t\n")
+ (rear-context-string)
+ (position . 1))
+("emacs configuration"
+ (filename . "~/.emacs.d/config.org")
+ (front-context-string . "#+SEQ_TODO: THIS")
+ (rear-context-string)
+ (position . 1))
+("password"
+ (filename . "~/gdrive-mount-point/home-remote/Everything/Others/Passwords.org")
+ (front-context-string . "* Github Authent")
+ (rear-context-string)
+ (position . 1))
+("remote home google drive"
+ (filename . "~/gdrive-mount-point/home-remote/")
+ (front-context-string . "1201_lab1.cpp\n  ")
+ (rear-context-string . "58 Jan 26 15:23 ")
+ (position . 251))
+)
