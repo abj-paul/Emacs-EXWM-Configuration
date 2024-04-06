@@ -1,0 +1,20 @@
+If you want a heavy-weight config, check ~master~ or other branches.
+
+* About
+Currently going for a minimal build. From my 4 years of using it, I have found a minimal config to be better for use and customizing. Since it is minimal, it lacks most high-end coding autocompletion etc tasks. But for those, ~Visual Studio~ or similar popular ones are really the ones to go for due to the amount of resources and ease of integration. So what do this minimal config contain?
+
+1. ~EVIL~ because I am evil haha.
+2. ~Company~ for autocompletion.
+3. ~EXWM~ because it is lightweight. And I love it.
+4. We loaded a theme called ~timu-rogue~. Its not bad..
+5. Used ~ivy~. todo
+6. Swiper due to how well it goes with ivy. Swiper makes amazing searching.
+7. Counsel
+8. ~Org roam~ and ~org roam roam ui~ because they are the core of emacs.
+9. ~vterm~ and ~multi-vterm~ since default eshell, term in emacs felt funky to me.
+10. ~Flycheck~ for syntax highlighting wherever it can. I don't really depend on it or anything.
+
+* What's next?
+- [ ] Good formatting of emacs org documents. I will steal the one from systemcrafter hihi.
+- [ ] We will try to save history of recently executed command. I remember there is a package for it.
+- [ ] Possibly customize it only for python since I do a lot of python coding on my own.
